@@ -20,10 +20,10 @@ Pod::Spec.new do |s|
                        Caishen provides a text field to enter credit card (or other card) information and validates most of this information on its own.
                        DESC
 
-  s.homepage         = "https://github.com/prolificinteractive/caishen"
+  s.homepage         = "https://github.com/prolificinteractive/caishen.git"
   s.license          = 'MIT'
   s.author           = { "Daniel Vancura" => "daniel@prolificinteractive.com" }
-  s.source           = { :git => "https://github.com/prolificinteractive/caishen", :tag => s.version.to_s }
+  s.source           = { :git => "git@github.com:prolificinteractive/caishen.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
