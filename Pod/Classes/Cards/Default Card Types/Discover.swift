@@ -8,9 +8,6 @@
 
 import UIKit
 
-/**
- *  The native supported card type of Discover
- */
 public struct Discover: CardType {
 
     public let name = "Discover"

@@ -6,9 +6,6 @@
 //
 //
 
-/**
- *  The undefined card type
- */
 internal struct UnknownCardType: CardType {
 
     let name = "Unknown"
