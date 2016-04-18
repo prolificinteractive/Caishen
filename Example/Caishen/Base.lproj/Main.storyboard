@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" id="vXZ-lx-hvc" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -50,7 +49,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="hsS-UZ-mFd" kind="presentation" id="658-sv-r6G"/>
+                                    <segue destination="hsS-UZ-mFd" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="658-sv-r6G"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fm4-5C-qEM">
@@ -77,7 +76,6 @@
                             <constraint firstItem="qSj-jg-p3c" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="xKI-pS-lWE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="awm-5l-iBR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
@@ -86,7 +84,7 @@
         <!--View Controller-->
         <scene sceneID="dnl-HE-hyL">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="hsS-UZ-mFd" customClass="ViewController" customModule="Caishen_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overFullScreen" id="hsS-UZ-mFd" customClass="ViewController" customModule="Caishen_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oHI-K3-Xu3"/>
                         <viewControllerLayoutGuide type="bottom" id="B9J-d7-Ph2"/>
@@ -95,63 +93,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RI5-5Y-nf5">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogN-FM-6lq">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Fqe-fb-xz5">
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="CDz-9F-L0o">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFY-oz-ejN">
-                                            <rect key="frame" x="8" y="28" width="48" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="48" id="8g2-bA-nTJ"/>
-                                                <constraint firstAttribute="height" constant="30" id="Lvy-kd-MyH"/>
-                                            </constraints>
-                                            <state key="normal" title="Cancel">
-                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="cancel:" destination="hsS-UZ-mFd" eventType="touchUpInside" id="8bM-hv-AcW"/>
-                                            </connections>
-                                        </button>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0000000000000000" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6lO-OL-1Oo" customClass="CardTextField" customModule="Caishen">
-                                            <rect key="frame" x="170" y="258" width="260" height="17"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0000000000000000" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xhV-mK-kcC" customClass="CardTextField" customModule="Caishen">
+                                            <rect key="frame" x="170" y="292" width="260" height="17"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="260" id="oKO-Xp-PQ1"/>
+                                                <constraint firstAttribute="width" constant="260" id="MsE-Yo-sBn"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your credit card information for Checkout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YbW-t1-c6k">
-                                            <rect key="frame" x="50" y="230" width="500" height="20"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ipi-TI-Rgi">
+                                            <rect key="frame" x="25" y="28" width="48" height="30"/>
+                                            <state key="normal" title="Cancel">
+                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="cancel:" destination="hsS-UZ-mFd" eventType="touchUpInside" id="k5X-bU-DIQ"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAI-hi-hV7">
+                                            <rect key="frame" x="544" y="28" width="31" height="30"/>
+                                            <state key="normal" title="BUY"/>
+                                            <connections>
+                                                <action selector="buy:" destination="hsS-UZ-mFd" eventType="touchUpInside" id="7n5-61-oP1"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your credit card information for Checkout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRC-Y1-VLm">
+                                            <rect key="frame" x="170" y="264" width="260" height="20"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nPj-wm-8B3">
-                                            <rect key="frame" x="561" y="28" width="31" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="31" id="Qrr-lR-llT"/>
-                                                <constraint firstAttribute="height" constant="30" id="jhr-vJ-3SW"/>
-                                            </constraints>
-                                            <state key="normal" title="BUY"/>
-                                            <connections>
-                                                <action selector="buy:" destination="hsS-UZ-mFd" eventType="touchUpInside" id="oPV-4o-W00"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="nPj-wm-8B3" secondAttribute="trailing" constant="8" id="3gp-0V-0lw"/>
-                                        <constraint firstItem="6lO-OL-1Oo" firstAttribute="top" secondItem="YbW-t1-c6k" secondAttribute="bottom" constant="8" id="5eq-WZ-19g"/>
-                                        <constraint firstItem="YbW-t1-c6k" firstAttribute="centerY" secondItem="Fqe-fb-xz5" secondAttribute="centerY" multiplier="0.8" id="XUl-tL-NUD"/>
-                                        <constraint firstItem="cFY-oz-ejN" firstAttribute="leading" secondItem="Fqe-fb-xz5" secondAttribute="leading" constant="8" id="hp8-O3-7Mk"/>
-                                        <constraint firstItem="6lO-OL-1Oo" firstAttribute="centerX" secondItem="Fqe-fb-xz5" secondAttribute="centerX" id="lnS-jb-CpX"/>
-                                        <constraint firstItem="nPj-wm-8B3" firstAttribute="top" secondItem="Fqe-fb-xz5" secondAttribute="top" constant="28" id="m44-lG-Eec"/>
-                                        <constraint firstItem="cFY-oz-ejN" firstAttribute="top" secondItem="Fqe-fb-xz5" secondAttribute="top" constant="28" id="mPp-Hg-Vs6"/>
-                                        <constraint firstItem="YbW-t1-c6k" firstAttribute="centerX" secondItem="Fqe-fb-xz5" secondAttribute="centerX" id="nPW-LJ-pcf"/>
-                                        <constraint firstItem="YbW-t1-c6k" firstAttribute="leading" secondItem="Fqe-fb-xz5" secondAttribute="leading" constant="50" id="w6z-tz-dgd"/>
-                                        <constraint firstAttribute="trailing" secondItem="YbW-t1-c6k" secondAttribute="trailing" constant="50" id="wOz-Zj-yCu"/>
+                                        <constraint firstItem="xhV-mK-kcC" firstAttribute="centerX" secondItem="CDz-9F-L0o" secondAttribute="centerX" id="0oX-04-ZYU"/>
+                                        <constraint firstItem="XRC-Y1-VLm" firstAttribute="trailing" secondItem="xhV-mK-kcC" secondAttribute="trailing" id="59g-rp-jq8"/>
+                                        <constraint firstItem="xhV-mK-kcC" firstAttribute="centerY" secondItem="CDz-9F-L0o" secondAttribute="centerY" id="CUf-H1-3Rs"/>
+                                        <constraint firstItem="Ipi-TI-Rgi" firstAttribute="leading" secondItem="CDz-9F-L0o" secondAttribute="leading" constant="25" id="ETN-pa-yPc"/>
+                                        <constraint firstItem="Ipi-TI-Rgi" firstAttribute="top" secondItem="CDz-9F-L0o" secondAttribute="top" constant="28" id="FTo-Yg-xJn"/>
+                                        <constraint firstItem="xhV-mK-kcC" firstAttribute="top" secondItem="XRC-Y1-VLm" secondAttribute="bottom" constant="8" symbolic="YES" id="Kwv-VD-nds"/>
+                                        <constraint firstAttribute="trailing" secondItem="iAI-hi-hV7" secondAttribute="trailing" constant="25" id="Xm5-Mj-CSq"/>
+                                        <constraint firstItem="iAI-hi-hV7" firstAttribute="baseline" secondItem="Ipi-TI-Rgi" secondAttribute="baseline" id="aXB-Hc-vKH"/>
+                                        <constraint firstItem="XRC-Y1-VLm" firstAttribute="leading" secondItem="xhV-mK-kcC" secondAttribute="leading" id="gqM-q8-LXh"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="light"/>
@@ -159,15 +148,16 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="RI5-5Y-nf5" firstAttribute="leading" secondItem="KfQ-Vz-Q2c" secondAttribute="leading" id="67N-kD-onI"/>
-                            <constraint firstItem="RI5-5Y-nf5" firstAttribute="bottom" secondItem="B9J-d7-Ph2" secondAttribute="top" id="Hb2-Ls-nLT"/>
-                            <constraint firstAttribute="trailing" secondItem="RI5-5Y-nf5" secondAttribute="trailing" id="Wy3-xS-Omo"/>
-                            <constraint firstItem="RI5-5Y-nf5" firstAttribute="top" secondItem="oHI-K3-Xu3" secondAttribute="bottom" constant="-20" id="dkH-HP-w6g"/>
+                            <constraint firstItem="ogN-FM-6lq" firstAttribute="top" secondItem="KfQ-Vz-Q2c" secondAttribute="top" id="9HZ-S2-nFb"/>
+                            <constraint firstAttribute="trailing" secondItem="ogN-FM-6lq" secondAttribute="trailing" id="dcm-R5-kPz"/>
+                            <constraint firstItem="ogN-FM-6lq" firstAttribute="bottom" secondItem="B9J-d7-Ph2" secondAttribute="top" id="oar-YM-l7a"/>
+                            <constraint firstItem="ogN-FM-6lq" firstAttribute="leading" secondItem="KfQ-Vz-Q2c" secondAttribute="leading" id="qyW-TH-cGx"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="buyButton" destination="nPj-wm-8B3" id="lew-mf-TOJ"/>
-                        <outlet property="cardNumberTextField" destination="6lO-OL-1Oo" id="gvp-PV-4ut"/>
+                        <outlet property="buyButton" destination="iAI-hi-hV7" id="iDO-bF-0FZ"/>
+                        <outlet property="cardNumberTextField" destination="xhV-mK-kcC" id="8L8-EK-bT0"/>
+                        <outlet property="view" destination="ogN-FM-6lq" id="wJc-0m-Y2W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J9l-iT-8Dt" userLabel="First Responder" sceneMemberID="firstResponder"/>
