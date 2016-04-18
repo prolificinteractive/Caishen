@@ -83,7 +83,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      The duration of the view animation when switching from number input to detail.
      */
-    @IBInspectable public var viewAnimationDuration: Double = 0.3
+    @IBInspectable public var viewAnimationDuration: Double? = 0.3
     
     /**
      The text color for invalid input in a text field.
@@ -269,7 +269,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         monthTextField?.deleteBackwardCallback = {_ -> Void in self.numberInputTextField?.becomeFirstResponder()}
         yearTextField?.deleteBackwardCallback = {_ -> Void in self.monthTextField?.becomeFirstResponder()}
         
-        let textFields: [UITextField?] = [numberInputTextField, cvcTextField, monthTextField, yearTextField]
+        let textFields: [UITextField?] = [numberInputTextField,cvcTextField,monthTextField,yearTextField]
         textFields.forEach({
             $0?.keyboardType = .NumberPad
             $0?.textColor = textColor
