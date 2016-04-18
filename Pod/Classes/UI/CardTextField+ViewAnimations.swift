@@ -12,13 +12,13 @@ public extension CardTextField {
     // MARK: - View animations
     
     internal func moveNumberFieldLeftAnimated() {
-        UIView.animateWithDuration(viewAnimationDuration, animations: { [weak self] _ in
+        UIView.animateWithDuration(viewAnimationDuration ?? 0.3, animations: { [weak self] _ in
             self?.moveNumberFieldLeft()
             })
     }
     
     internal func moveNumberFieldRightAnimated() {
-        UIView.animateWithDuration(viewAnimationDuration, animations: { [weak self] _ in
+        UIView.animateWithDuration(viewAnimationDuration ?? 0.3, animations: { [weak self] _ in
             self?.moveNumberFieldRight()
             })
     }
