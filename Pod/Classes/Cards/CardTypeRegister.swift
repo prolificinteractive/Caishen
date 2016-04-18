@@ -17,7 +17,6 @@ public class CardTypeRegister {
     init() {
         registeredCardTypes = [
             AmericanExpress(),
-            ChinaUnionPay(),
             DinersClub(),
             Discover(),
             JCB(),

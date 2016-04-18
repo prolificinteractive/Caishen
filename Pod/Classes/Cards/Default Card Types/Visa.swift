@@ -8,9 +8,6 @@
 
 import UIKit
 
-/**
- *  The native supported card type of Visa
- */
 public struct Visa: CardType {
     
     public let name = "Visa"

@@ -8,9 +8,6 @@
 
 import UIKit
 
-/**
- *  The native supported card type of JCB, Japan Credit Bureau
- */
 public struct JCB: CardType {
     
     public let name = "JCB"

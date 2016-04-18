@@ -18,14 +18,6 @@ class CardNumberValidatorTests: XCTestCase {
         "343876068903839","342853139737588","375225668591555",
         "345635170374943"
     ]
-    private let validChinaUnionPayNumbers = [
-        "6281263666071775", "6216618744032364", "6207688951528694",
-        "6246553262016057", "6231548126188602", "6229666229491402",
-        "6256787225452531", "6275921608934487", "6231343519691887",
-        "6202825789208058", "6239804726435477", "6286698514203507",
-        "6234017862752879", "6273996009006863", "6268602610482249",
-        "6201175172181186", "6205373975695173",
-    ]
     private let validDinersClubNumbers = [
         "38923577957110","30014619316479","30230875312552",
         "30039434938819","30322407024993","30398292508332",
@@ -85,12 +77,6 @@ class CardNumberValidatorTests: XCTestCase {
             XCTAssertValid(AmericanExpress().validateNumber(Number(rawValue: $0)))
         })
         
-        print("Validate China UnionPay")
-        self.validChinaUnionPayNumbers.forEach({
-            XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, ChinaUnionPay().name)
-            XCTAssertValid(ChinaUnionPay().validateNumber(Number(rawValue: $0)))
-        })
-        
         print("Validate Diners Club")
         self.validDinersClubNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, DinersClub().name)
@@ -117,7 +103,6 @@ class CardNumberValidatorTests: XCTestCase {
         let tooShortDiscover = "601111111111111"
         let tooShortJCB = "353011133330000"
         let tooShortMasterCard = "555555555555444"
-        let tooShortChinaUnionPay = "628126366607177"
         
         let tooLongVisa = "41111111111111111"
         let tooLongAmex = "3782822463100000"
@@ -125,7 +110,6 @@ class CardNumberValidatorTests: XCTestCase {
         let tooLongDiscover = "60111111111111111"
         let tooLongJCB = "35301113333000000"
         let tooLongMasterCard = "55555555555544444"
-        let tooLongChinaUnionPay = "62812636660717755"
         
         XCTAssertIncompleteNumber(Visa().validateNumber(Number(rawValue: tooShortVisa)))
         XCTAssertIncompleteNumber(AmericanExpress().validateNumber(Number(rawValue: tooShortAmex)))
@@ -133,7 +117,6 @@ class CardNumberValidatorTests: XCTestCase {
         XCTAssertIncompleteNumber(Discover().validateNumber(Number(rawValue: tooShortDiscover)))
         XCTAssertIncompleteNumber(JCB().validateNumber(Number(rawValue: tooShortJCB)))
         XCTAssertIncompleteNumber(MasterCard().validateNumber(Number(rawValue: tooShortMasterCard)))
-        XCTAssertIncompleteNumber(ChinaUnionPay().validateNumber(Number(rawValue: tooShortChinaUnionPay)))
         
         XCTAssertInvalidNumberForType(Visa().validateNumber(Number(rawValue: tooLongVisa)))
         XCTAssertInvalidNumberForType(AmericanExpress().validateNumber(Number(rawValue: tooLongAmex)))
@@ -141,7 +124,6 @@ class CardNumberValidatorTests: XCTestCase {
         XCTAssertInvalidNumberForType(Discover().validateNumber(Number(rawValue: tooLongDiscover)))
         XCTAssertInvalidNumberForType(JCB().validateNumber(Number(rawValue: tooLongJCB)))
         XCTAssertInvalidNumberForType(MasterCard().validateNumber(Number(rawValue: tooLongMasterCard)))
-        XCTAssertInvalidNumberForType(ChinaUnionPay().validateNumber(Number(rawValue: tooLongChinaUnionPay)))
     }
     
     /**
