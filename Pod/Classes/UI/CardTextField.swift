@@ -506,7 +506,13 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     }
     
     public override func becomeFirstResponder() -> Bool {
-        // Return false, since this text view is only for background style purposes
-        return false
+        // Return false if any of this text field's subviews is already first responder. 
+        // Otherwise let `numberInputTextField` become the first responder.
+        if [numberInputTextField,monthTextField,yearTextField,cvcTextField]
+            .flatMap({return $0.isFirstResponder()})
+            .reduce(true, combine: {$0 && $1}) {
+            return false
+        }
+        return numberInputTextField.becomeFirstResponder()
     }
 }
