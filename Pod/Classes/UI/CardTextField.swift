@@ -515,4 +515,19 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         }
         return numberInputTextField.becomeFirstResponder()
     }
+    
+    public override func isFirstResponder() -> Bool {
+        // Return true if any of `self`'s subviews is the current first responder.
+        return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
+        .filter({$0.isFirstResponder()})
+        .isEmpty == false
+    }
+    
+    public override func resignFirstResponder() -> Bool {
+        // If any of `self`'s subviews is first responder, resign first responder status.
+        return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
+            .filter({$0.isFirstResponder()})
+            .first?
+            .resignFirstResponder() ?? true
+    }
 }
