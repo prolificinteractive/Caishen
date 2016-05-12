@@ -114,14 +114,19 @@ public extension CardTextField {
                            dispatch_get_main_queue()) { [weak self] _ in
                 self?.numberInputTextField?.layer.mask = nil
             }
+            
+            // Let the number text field become first responder only after the animation has completed (left to right script)
+            // or half way through the view animation (right to left script)
+            let firstResponderDelay = isRightToLeftLanguage ? viewAnimationDuration / 2.0 : viewAnimationDuration
+            dispatch_after(dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(firstResponderDelay * Double(NSEC_PER_SEC))),
+                           dispatch_get_main_queue()) {
+                            self.numberInputTextField.becomeFirstResponder()
+            }
         } else {
             numberInputTextField?.layer.mask = nil
-        }
-        
-        if isRightToLeftLanguage {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(viewAnimationDuration / 2.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()){
-                self.numberInputTextField.becomeFirstResponder()
-            }
+            numberInputTextField.becomeFirstResponder()
         }
     }
 }
