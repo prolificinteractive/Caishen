@@ -90,7 +90,6 @@ public extension CardTextField {
      */
     public func moveCardNumberIn() {
         let infoTextFields: [UITextField?] = [monthTextField, yearTextField, cvcTextField]
-        infoTextFields.forEach({$0?.resignFirstResponder()})
         if isRightToLeftLanguage {
             UIView.performWithoutAnimation {
                 self.numberInputTextField?.alpha = 1
@@ -122,10 +121,12 @@ public extension CardTextField {
                 DISPATCH_TIME_NOW,
                 Int64(firstResponderDelay * Double(NSEC_PER_SEC))),
                            dispatch_get_main_queue()) {
+                            infoTextFields.forEach({$0?.resignFirstResponder()})
                             self.numberInputTextField.becomeFirstResponder()
             }
         } else {
             numberInputTextField?.layer.mask = nil
+            infoTextFields.forEach({$0?.resignFirstResponder()})
             numberInputTextField.becomeFirstResponder()
         }
     }
