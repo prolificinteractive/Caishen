@@ -90,19 +90,8 @@ public extension CardTextField {
      */
     public func moveCardNumberIn() {
         let infoTextFields: [UITextField?] = [monthTextField, yearTextField, cvcTextField]
-        if isRightToLeftLanguage {
-            UIView.performWithoutAnimation {
-                self.numberInputTextField?.alpha = 1
-                self.numberInputTextField?.transform = CGAffineTransformIdentity
-            }
-        } else {
-            numberInputTextField?.alpha = 1
-            numberInputTextField?.transform = CGAffineTransformIdentity
-        }
         
-        // Move card info view
-        let offset = isRightToLeftLanguage ? -superview!.bounds.width : superview!.bounds.width
-        cardInfoView?.transform = CGAffineTransformMakeTranslation(offset, 0)
+        translateCardNumberIn()
         
         // If card info view is moved with an animation, wait for it to finish before
         // showing the full card number to avoid overlapping on RTL language.
@@ -129,5 +118,21 @@ public extension CardTextField {
             infoTextFields.forEach({$0?.resignFirstResponder()})
             numberInputTextField.becomeFirstResponder()
         }
+    }
+    
+    internal func translateCardNumberIn() {
+        if isRightToLeftLanguage {
+            UIView.performWithoutAnimation {
+                self.numberInputTextField?.alpha = 1
+                self.numberInputTextField?.transform = CGAffineTransformIdentity
+            }
+        } else {
+            numberInputTextField?.alpha = 1
+            numberInputTextField?.transform = CGAffineTransformIdentity
+        }
+        
+        // Move card info view
+        let offset = isRightToLeftLanguage ? -superview!.bounds.width : superview!.bounds.width
+        cardInfoView?.transform = CGAffineTransformMakeTranslation(offset, 0)
     }
 }

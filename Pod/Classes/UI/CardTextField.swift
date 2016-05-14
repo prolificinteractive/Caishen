@@ -410,7 +410,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        moveCardNumberIn()
+        translateCardNumberIn()
     }
     
     // MARK: - View customization
@@ -492,7 +492,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         
         // If moving to a larger screen size and not showing the detail view, make sure that it is outside the view.
         if let transform = cardInfoView?.transform where !CGAffineTransformIsIdentity(transform) {
-            moveCardNumberIn()
+            translateCardNumberIn()
         }
     }
     
