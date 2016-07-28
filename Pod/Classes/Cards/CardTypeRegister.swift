@@ -88,9 +88,9 @@ public class CardTypeRegister {
      
      - returns: An instance of UnknownCardType, if no card type matches the Issuer Identification Number of the provided card number or any other card type that matches the card number.
      */
-    public func cardTypeForNumber(_ cardNumber: Number) -> CardType {
-        for i in (0...min(cardNumber.length, 6)).reversed() {
-            if let substring = cardNumber.rawValue[0,i], let substringAsNumber = Int(substring) {
+    public func cardTypeFor(number: Number) -> CardType {
+        for i in (0...min(number.length, 6)).reversed() {
+            if let substring = number.rawValue[0,i], let substringAsNumber = Int(substring) {
                 if let firstMatchingCardType = registeredCardTypes.filter({
                     $0.identifyingDigits.contains(substringAsNumber)
                 }).first {

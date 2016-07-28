@@ -67,19 +67,19 @@ class MyViewController: UIViewController, CardTextFieldDelegate {
 		...
 	}
 	
-	func cardTextField(cardTextField: CardTextField, didEnterCardInformation information: Card, withValidationResult validationResult: CardValidationResult) {
-		// A valid card has been entered, if information is not nil and validationResult == CardValidationResult.Valid
-	}
-	
-	func cardTextFieldShouldShowAccessoryImage(cardTextField: CardTextField) -> UIImage? {
-		// You can return an image which will be used on cardTextField's accessory button
-		// If you return nil but provide an accessory button action, the unicode character "⇤" is displayed instead of an image to indicate an action that affects the text field.
-	}
-	
-	func cardTextFieldShouldProvideAccessoryAction(cardTextField: CardTextField) -> (() -> ())? {
-		// You can return a callback function which will be called if a user tapped on cardTextField's accessory button
-		// If you return nil, cardTextField won't display an accessory button at all.
-	}
+	func cardTextField(_ cardTextField: CardTextField, didEnterCardInformation information: Card, withValidationResult validationResult: CardValidationResult) {
+        // A valid card has been entered, if validationResult == CardValidationResult.Valid
+    }
+    
+    func cardTextFieldShouldShowAccessoryImage(_ cardTextField: CardTextField) -> UIImage? {
+        // You can return an image which will be used on cardTextField's accessory button
+		 // If you return nil but provide an accessory button action, the unicode character "⇤" is displayed instead of an image to indicate an action that affects the text field.
+    }
+    
+    func cardTextFieldShouldProvideAccessoryAction(_ cardTextField: CardTextField) -> (() -> ())? {
+		 // You can return a callback function which will be called if a user tapped on cardTextField's accessory button
+		 // If you return nil, cardTextField won't display an accessory button at all.
+    }
 	
 	...
 ```
@@ -122,19 +122,19 @@ class ViewController: UIViewController, CardTextFieldDelegate, CardIOPaymentView
 	...
 	
 	// MARK: - CardTextFieldDelegate
-    func cardTextField(cardTextField: CardTextField, didEnterCardInformation information: Card, withValidationResult validationResult: CardValidationResult) {
+    func cardTextField(_ cardTextField: CardTextField, didEnterCardInformation information: Card, withValidationResult validationResult: CardValidationResult) {
         if validationResult == .Valid {
         	// A valid payment card has been manually entered or CardIO was used to scan one.
         }
     }
     
     // 2. Optionally provide an image for the CardIO button
-    func cardTextFieldShouldShowAccessoryImage(cardTextField: CardTextField) -> UIImage? {
+    func cardTextFieldShouldShowAccessoryImage(_ cardTextField: CardTextField) -> UIImage? {
         return UIImage(named: "cardIOIcon")
     }
     
     // 3. Set the action for the accessoryButton to open CardIO:
-    func cardTextFieldShouldProvideAccessoryAction(cardTextField: CardTextField) -> (() -> ())? {
+    func cardTextFieldShouldProvideAccessoryAction(_ cardTextField: CardTextField) -> (() -> ())? {
         return { [weak self] _ in
             let cardIOViewController = CardIOPaymentViewController(paymentDelegate: self)
             self?.presentViewController(cardIOViewController, animated: true, completion: nil)
@@ -235,9 +235,9 @@ class ViewController: UIViewController, NumberInputTextFieldDelegate, CardInfoTe
         let expiry = Expiry(month: monthInputTextField.text ?? "", year: yearInputTextField.text ?? "")
                         ?? Expiry.invalid
         
-        let cardType = cardNumberTextField.cardTypeRegister.cardTypeForNumber(cardNumberTextField.cardNumber)
-        if cardType.validateCVC(cvc).union(cardType.validateExpiry(expiry)).union(cardType.validateNumber(number)) == .Valid {
-            return Card(bankCardNumber: number, cardVerificationCode: cvc, expiryDate: expiry)
+        let cardType = cardNumberTextField.cardTypeRegister.cardTypeFor(number: cardNumberTextField.cardNumber)
+        if cardType.validate(cvc: cvc).union(cardType.validate(expiry: expiry)).union(cardType.validate(number: number)) == .Valid {
+            return Card(number: number, cvc: cvc, expiry: expiry)
         } else {
             return nil
         }
@@ -258,18 +258,18 @@ class ViewController: UIViewController, NumberInputTextFieldDelegate, CardInfoTe
         cvcInputTextField.deleteBackwardCallback = { _ in self.yearInputTextField.becomeFirstResponder() }
     }
     
-    func numberInputTextFieldDidComplete(numberInputTextField: NumberInputTextField) {
-        cvcInputTextField.cardType = numberInputTextField.cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
+    func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField) {
+        cvcInputTextField.cardType = numberInputTextField.cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
         print("Card number: \(numberInputTextField.cardNumber)")
         print(card)
         monthInputTextField.becomeFirstResponder()
     }
     
-    func numberInputTextFieldDidChangeText(numberInputTextField: NumberInputTextField) {
+    func numberInputTextFieldDidChangeText(_ numberInputTextField: NumberInputTextField) {
         
     }
     
-    func textField(textField: UITextField, didEnterValidInfo: String) {
+    func textField(_ textField: UITextField, didEnterValidInfo: String) {
         switch textField {
         case is MonthInputTextField:
             print("Month: \(didEnterValidInfo)")
@@ -285,12 +285,12 @@ class ViewController: UIViewController, NumberInputTextFieldDelegate, CardInfoTe
         print(card)
     }
     
-    func textField(textField: UITextField, didEnterPartiallyValidInfo: String) {
+    func textField(_ textField: UITextField, didEnterPartiallyValidInfo: String) {
         // The user entered information that is not valid but might become valid on further input.
         // Example: Entering "1" for the CVC is partially valid, while entering "a" is not.
     }
     
-    func textField(textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
+    func textField(_ textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
         // This function is used in a CardTextField to carry digits to the next text field.
         // Example: A user entered "02/20" as expiry and now tries to append "5" to the month.
         //          On a card text field, the year will be replaced with "5" - the overflow digit.

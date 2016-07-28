@@ -162,7 +162,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
                 Expiry(month: monthTextField.text ?? "", year: yearTextField.text ?? "")
                     ?? Expiry.invalid
 
-            return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry)
+            return Card(number: cardNumber, cvc: cardCVC, expiry: cardExpiry)
         }
     }
     
@@ -200,7 +200,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             return nil
         }
         
-        return cardTypeRegister.cardTypeForNumber(number)
+        return cardTypeRegister.cardTypeFor(number: number)
     }
     
     internal var hideExpiryTextFields: Bool = false {
@@ -481,16 +481,16 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     @objc public func numberInputTextFieldDidChangeText(_ numberInputTextField: NumberInputTextField) {
         showCardImage()
         notifyDelegate()
-        hideExpiryTextFields = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresExpiry
-        hideCVCTextField = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresCVC
+        hideExpiryTextFields = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresExpiry
+        hideCVCTextField = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresCVC
     }
     
     public func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField) {
         moveCardNumberOutAnimated()
         
         notifyDelegate()
-        hideExpiryTextFields = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresExpiry
-        hideCVCTextField = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresCVC
+        hideExpiryTextFields = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresExpiry
+        hideCVCTextField = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresCVC
         if hideExpiryTextFields && hideCVCTextField {
             return
         } else if hideExpiryTextFields {
@@ -506,7 +506,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Displays the card image for the currently detected card type in the card text field's `cardImageView`.
      */
     internal func showCardImage() {
-        let cardType = cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
+        let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
         let cardTypeImage = cardTypeImageStore.imageFor(cardType: cardType)
 
         cardImageView?.image = cardTypeImage
@@ -516,7 +516,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Displays the CVC image for the currently detected card type in the card text field's `cardImageView`.
      */
     internal func showCVCImage() {
-        let cardType = cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
+        let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
         let cvcImage = cardTypeImageStore.cvcImageFor(cardType: cardType)
         
         cardImageView?.image = cvcImage
