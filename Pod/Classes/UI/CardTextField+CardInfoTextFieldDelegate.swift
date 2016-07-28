@@ -14,7 +14,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
         updateNumberColor()
         notifyDelegate()
         if expirationDateIsValid() {
-            selectNextTextField(textField, prefillText: nil)
+            select(textField: textField, prefillText: nil)
         }
     }
     
@@ -25,14 +25,14 @@ extension CardTextField: CardInfoTextFieldDelegate {
     
     public func textField(_ textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
         updateNumberColor()
-        selectNextTextField(textField, prefillText: overFlowDigits)
+        select(textField: textField, prefillText: overFlowDigits)
     }
 
-    private func selectNextTextField(_ textField: UITextField, prefillText: String?) {
+    private func select(textField: UITextField, prefillText: String?) {
         var nextTextField: UITextField?
         if textField == monthTextField {
             if hideExpiryTextFields {
-                selectNextTextField(yearTextField, prefillText: prefillText)
+                select(textField: yearTextField, prefillText: prefillText)
             } else {
                 nextTextField = yearTextField
             }

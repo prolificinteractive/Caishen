@@ -34,7 +34,7 @@ public extension CardTextField {
      */
     public func moveCardNumberOut() {
         // If the card number is invalid, do not allow to move to the card detail
-        if cardType?.validateNumber(card.bankCardNumber) != .Valid {
+        if cardType?.validate(number: card.bankCardNumber) != .Valid {
             return
         }
         // If neither expiry nor cvc are required, also do not allow to move to the detail

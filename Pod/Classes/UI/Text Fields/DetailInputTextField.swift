@@ -33,9 +33,9 @@ public class DetailInputTextField: StylizedTextField {
             return false
         }
         
-        let autoCompletedNewText = autocompleteText(newText)
+        let autoCompletedNewText = autocomplete(text: newText)
         
-        let (currentTextFieldText, overflowTextFieldText) = splitText(autoCompletedNewText)
+        let (currentTextFieldText, overflowTextFieldText) = split(text: autoCompletedNewText)
         
         if isInputValid(currentTextFieldText, partiallyValid: true) {
             textField.text = currentTextFieldText
@@ -53,17 +53,15 @@ public class DetailInputTextField: StylizedTextField {
         return false
     }
     
-    public func prefillInformation(_ info: String) {
-        if isInputValid(info, partiallyValid: false) {
-            text = info
-            cardInfoTextFieldDelegate?.textField(self, didEnterValidInfo: info)
-        } else if isInputValid(info, partiallyValid: true) {
-            text = info
-            cardInfoTextFieldDelegate?.textField(self, didEnterPartiallyValidInfo: info)
+    public func prefill(text: String) {
+        if isInputValid(text, partiallyValid: false) {
+            cardInfoTextFieldDelegate?.textField(self, didEnterValidInfo: text)
+        } else if isInputValid(text, partiallyValid: true) {
+            cardInfoTextFieldDelegate?.textField(self, didEnterPartiallyValidInfo: text)
         }
     }
     
-    private func splitText(_ text: String) -> (currentText: String, overflowText: String) {
+    private func split(text: String) -> (currentText: String, overflowText: String) {
         let hasOverflow = text.characters.count > expectedInputLength
         let index = (hasOverflow) ?
             text.characters.index(text.startIndex, offsetBy: expectedInputLength) :
@@ -74,7 +72,7 @@ public class DetailInputTextField: StylizedTextField {
 
 extension DetailInputTextField: AutoCompletingTextField {
 
-    func autocompleteText(_ text: String) -> String {
+    func autocomplete(text: String) -> String {
         return text
     }
 }

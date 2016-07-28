@@ -40,7 +40,7 @@ public struct Card {
      
      - returns: A card with the provided parameters.
      */
-    public static func create(_ number: String, cardVerificationCode cvc: String, expiry: String) throws -> Card {
+    public static func create(number: String, cardVerificationCode cvc: String, expiry: String) throws -> Card {
         // Create card number, cvc and expiry with the arguments provided
         let cardNumber = Number(rawValue: number)
         let cardCVC = CVC(rawValue: cvc)

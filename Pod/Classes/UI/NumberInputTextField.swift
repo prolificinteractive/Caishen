@@ -35,7 +35,7 @@ public class NumberInputTextField: StylizedTextField {
      */
     @IBInspectable public var cardNumberSeparator: String = "-" {
         didSet {
-            placeholder = cardNumberFormatter.formattedCardNumber(self.placeholder ?? "1234123412341234")
+            placeholder = cardNumberFormatter.format(cardNumber: self.placeholder ?? "1234123412341234")
         }
     }
 
@@ -50,7 +50,7 @@ public class NumberInputTextField: StylizedTextField {
             
             // If this is a Credit Card placeholder and wasn't already formatted, format it
             if isCreditString && isUnformatted && cardNumberSeparator != "" {
-                self.placeholder = cardNumberFormatter.formattedCardNumber(placeholder)
+                self.placeholder = cardNumberFormatter.format(cardNumber: placeholder)
             }
         }
     }
@@ -124,9 +124,9 @@ public class NumberInputTextField: StylizedTextField {
         }
 
         let parsedCardNumber = Number(rawValue: newTextUnformatted)
-        let oldValidation = cardTypeRegister.cardTypeForNumber(cardNumber).validateNumber(cardNumber)
+        let oldValidation = cardTypeRegister.cardTypeForNumber(cardNumber).validate(number: cardNumber)
         let newValidation =
-            cardTypeRegister.cardTypeForNumber(parsedCardNumber).validateNumber(parsedCardNumber)
+            cardTypeRegister.cardTypeForNumber(parsedCardNumber).validate(number: parsedCardNumber)
 
         if !newValidation.contains(.NumberTooLong) {
             cardNumberFormatter.replaceRangeFormatted(range, inTextField: textField, withString: string)
@@ -164,15 +164,15 @@ public class NumberInputTextField: StylizedTextField {
      
      - parameter cardNumber: The card number which should be displayed in `self`.
      */
-    public func prefillInformation(_ cardNumber: String) {
-        let unformattedCardNumber = String(cardNumber.characters.filter({$0.isNumeric()}))
+    public func prefill(text: String) {
+        let unformattedCardNumber = String(text.characters.filter({$0.isNumeric()}))
         let cardNumber = Number(rawValue: unformattedCardNumber)
         let type = cardTypeRegister.cardTypeForNumber(cardNumber)
         let numberPartiallyValid = type.checkCardNumberPartiallyValid(cardNumber) == .Valid
         
         if numberPartiallyValid {
             let formatter = cardNumberFormatter
-            text = formatter.formattedCardNumber(unformattedCardNumber)
+            self.text = formatter.format(cardNumber: unformattedCardNumber)
             numberInputTextFieldDelegate?.numberInputTextFieldDidChangeText(self)
         }
     }
@@ -189,7 +189,7 @@ public class NumberInputTextField: StylizedTextField {
      
      - returns: A rect indicating the location and bounds of the text within the text field, or nil, if an invalid range has been entered.
      */
-    private func rectForTextRange(_ range: NSRange, inTextField textField: UITextField) -> CGRect? {
+    private func rectFor(range: NSRange, in textField: UITextField) -> CGRect? {
         guard let rangeStart = textField.position(from: textField.beginningOfDocument, offset: range.location) else {
             return nil
         }
@@ -216,7 +216,7 @@ public class NumberInputTextField: StylizedTextField {
             return nil
         }
         
-        return rectForTextRange(NSMakeRange(textLength - lastGroupLength, lastGroupLength), inTextField: self)
+        return rectFor(range: NSMakeRange(textLength - lastGroupLength, lastGroupLength), in: self)
     }
     
     // MARK: Accessibility

@@ -52,14 +52,14 @@ public struct Expiry: RawRepresentable {
         }
         
         let monthRange = match.range(at: 1)
-        if monthRange.length > 0, let range = string.rangeFromNSRange(monthRange) {
+        if monthRange.length > 0, let range = string.rangeFrom(nsRange: monthRange) {
             monthStr = string.substring(with: range)
         } else {
             return nil
         }
         
         let yearRange = match.range(at: 2)
-        if yearRange.length > 0, let range = string.rangeFromNSRange(yearRange) {
+        if yearRange.length > 0, let range = string.rangeFrom(nsRange: yearRange) {
             yearStr = string.substring(with: range)
         } else {
             return nil
@@ -112,7 +112,7 @@ public struct Expiry: RawRepresentable {
             return nil
         }
 
-        guard let date = toDate(month, year: yearValue) else {
+        guard let date = toDate(month: month, year: yearValue) else {
             return nil
         }
 
@@ -144,7 +144,7 @@ extension Expiry: CustomStringConvertible {
  
  - returns: The date with month and year and time set to one minute before the following month.
  */
-private func toDate(_ month: UInt, year: UInt) -> Date? {
+private func toDate(month: UInt, year: UInt) -> Date? {
     var dateComponents = DateComponents()
     dateComponents.day = 1
     dateComponents.month = Int(month)
