@@ -30,10 +30,10 @@ public extension CardTextField {
             textFieldArray.forEach({$0?.keyboardType = keyboardType})
         }
     }
-    public override final var secureTextEntry: Bool {
+    public override final var isSecureTextEntry: Bool {
         didSet {
             let textFieldArray: [UITextField?] = [numberInputTextField, cvcTextField, monthTextField, yearTextField]
-            textFieldArray.forEach({$0?.secureTextEntry = secureTextEntry})
+            textFieldArray.forEach({$0?.isSecureTextEntry = isSecureTextEntry})
         }
     }
     public override final var keyboardAppearance: UIKeyboardAppearance {

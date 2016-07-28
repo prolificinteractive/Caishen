@@ -15,7 +15,7 @@ public extension CardTextField {
      Moves the card number input field to the left outside of the screen with an animation of the duration `viewAnimationDuration`, so that only the last group of the card number is visible. At the same time, the card detail (expiration month and year and CVC) slide in from the right.
      */
     public func moveCardNumberOutAnimated() {
-        UIView.animateWithDuration(viewAnimationDuration, animations: { [weak self] _ in
+        UIView.animate(withDuration: viewAnimationDuration, animations: { [weak self] _ in
             self?.moveCardNumberOut()
             })
     }
@@ -24,7 +24,7 @@ public extension CardTextField {
      Moves the full card number input field to inside the screen with an animation of the duration `viewAnimationDuration`. At the same time, the card detail (expiration month and year and CVC) slide outside the view.
      */
     public func moveCardNumberInAnimated() {
-        UIView.animateWithDuration(viewAnimationDuration, animations: { [weak self] _ in
+        UIView.animate(withDuration: viewAnimationDuration, animations: { [weak self] _ in
             self?.moveCardNumberIn()
             })
     }
@@ -45,7 +45,7 @@ public extension CardTextField {
         // which in turn will cause the number field to move to full display. This can cause animation issues.
         // In order to tackle these animation issues, check if the cardInfoView was previously fully displayed (and should therefor not be moved with an animation).
         var shouldMoveAnimated: Bool = true
-        if let transform = cardInfoView?.transform where CGAffineTransformIsIdentity(transform) {
+        if let transform = cardInfoView?.transform where transform.isIdentity {
             shouldMoveAnimated = false
         }
         UIView.performWithoutAnimation { [weak self] _ in
@@ -57,18 +57,18 @@ public extension CardTextField {
             // Else: Move the number out of range, except for the last group.
             if isRightToLeftLanguage {
                 let shapeLayer = CAShapeLayer()
-                let path = CGPathCreateWithRect(rect, nil)
+                let path = CGPath(rect: rect, transform: nil)
                 shapeLayer.path = path
                 numberInputTextField.layer.mask = shapeLayer
-                numberInputTextField?.transform = CGAffineTransformIdentity
+                numberInputTextField?.transform = CGAffineTransform.identity
             } else {
                 if shouldMoveAnimated {
                     numberInputTextField?.transform =
-                        CGAffineTransformMakeTranslation(-rect.origin.x, 0)
+                        CGAffineTransform(translationX: -rect.origin.x, y: 0)
                 } else {
                     UIView.performWithoutAnimation { [weak self] _ in
                         self?.numberInputTextField?.transform =
-                            CGAffineTransformMakeTranslation(-rect.origin.x, 0)
+                            CGAffineTransform(translationX: -rect.origin.x, y: 0)
                     }
                 }
             }
@@ -80,10 +80,10 @@ public extension CardTextField {
             self?.numberInputTextField?.resignFirstResponder()
         }
         if shouldMoveAnimated {
-            cardInfoView?.transform = CGAffineTransformIdentity
+            cardInfoView?.transform = CGAffineTransform.identity
         } else {
             UIView.performWithoutAnimation { [weak self] _ in
-                self?.cardInfoView?.transform = CGAffineTransformIdentity
+                self?.cardInfoView?.transform = CGAffineTransform.identity
             }
         }
 		monthTextField.becomeFirstResponder()
@@ -100,20 +100,14 @@ public extension CardTextField {
         // If card info view is moved with an animation, wait for it to finish before
         // showing the full card number to avoid overlapping on RTL language.
         if cardInfoView?.layer.animationKeys() != nil {
-            dispatch_after(dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(viewAnimationDuration * Double(NSEC_PER_SEC))),
-                           dispatch_get_main_queue()) { [weak self] _ in
+            DispatchQueue.main.after(when: DispatchTime.now() + Double(Int64(viewAnimationDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { [weak self] _ in
                 self?.numberInputTextField?.layer.mask = nil
             }
             
             // Let the number text field become first responder only after the animation has completed (left to right script)
             // or half way through the view animation (right to left script)
             let firstResponderDelay = isRightToLeftLanguage ? viewAnimationDuration / 2.0 : viewAnimationDuration
-            dispatch_after(dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(firstResponderDelay * Double(NSEC_PER_SEC))),
-                           dispatch_get_main_queue()) {
+            DispatchQueue.main.after(when: DispatchTime.now() + Double(Int64(firstResponderDelay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
                             infoTextFields.forEach({$0?.resignFirstResponder()})
                             self.numberInputTextField.becomeFirstResponder()
             }
@@ -128,15 +122,15 @@ public extension CardTextField {
         if isRightToLeftLanguage {
             UIView.performWithoutAnimation {
                 self.numberInputTextField?.alpha = 1
-                self.numberInputTextField?.transform = CGAffineTransformIdentity
+                self.numberInputTextField?.transform = CGAffineTransform.identity
             }
         } else {
             numberInputTextField?.alpha = 1
-            numberInputTextField?.transform = CGAffineTransformIdentity
+            numberInputTextField?.transform = CGAffineTransform.identity
         }
         
         // Move card info view
         let offset = isRightToLeftLanguage ? -bounds.width : bounds.width
-        cardInfoView?.transform = CGAffineTransformMakeTranslation(offset, 0)
+        cardInfoView?.transform = CGAffineTransform(translationX: offset, y: 0)
     }
 }

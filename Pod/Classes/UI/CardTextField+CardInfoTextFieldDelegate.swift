@@ -10,7 +10,7 @@ import UIKit
 
 extension CardTextField: CardInfoTextFieldDelegate {
 
-    public func textField(textField: UITextField, didEnterValidInfo: String) {
+    public func textField(_ textField: UITextField, didEnterValidInfo: String) {
         updateNumberColor()
         notifyDelegate()
         if expirationDateIsValid() {
@@ -18,17 +18,17 @@ extension CardTextField: CardInfoTextFieldDelegate {
         }
     }
     
-    public func textField(textField: UITextField, didEnterPartiallyValidInfo: String) {
+    public func textField(_ textField: UITextField, didEnterPartiallyValidInfo: String) {
         updateNumberColor()
         notifyDelegate()
     }
     
-    public func textField(textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
+    public func textField(_ textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
         updateNumberColor()
         selectNextTextField(textField, prefillText: overFlowDigits)
     }
 
-    private func selectNextTextField(textField: UITextField, prefillText: String?) {
+    private func selectNextTextField(_ textField: UITextField, prefillText: String?) {
         var nextTextField: UITextField?
         if textField == monthTextField {
             if hideExpiryTextFields {
@@ -48,7 +48,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
             return
         }
         
-        nextTextField?.delegate?.textField?(nextTextField!, shouldChangeCharactersInRange: NSMakeRange(0, (nextTextField?.text ?? "").characters.count), replacementString: prefillText)
+        nextTextField?.delegate?.textField?(nextTextField!, shouldChangeCharactersIn: NSMakeRange(0, (nextTextField?.text ?? "").characters.count), replacementString: prefillText)
     }
     
     /**
@@ -57,7 +57,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
     private func updateNumberColor() {
         // if the expiration date is not valid, set the text color for the date to `invalidNumberColor`
         if !expirationDateIsValid() {
-            let invalidInputColor = self.invalidInputColor ?? UIColor.redColor()
+            let invalidInputColor = self.invalidInputColor ?? UIColor.red()
             // if the expiration date text fields haven't been assigned invalid input color
             if monthTextField?.textColor != invalidInputColor && yearTextField?.textColor != invalidInputColor {
                 monthTextField?.textColor = invalidInputColor
@@ -66,8 +66,8 @@ extension CardTextField: CardInfoTextFieldDelegate {
                 addDateInvalidityObserver()
             }
         } else {
-            monthTextField?.textColor = numberInputTextField?.textColor ?? UIColor.blackColor()
-            yearTextField?.textColor = numberInputTextField?.textColor ?? UIColor.blackColor()
+            monthTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black()
+            yearTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black()
         }
     }
 
@@ -99,9 +99,9 @@ extension CardTextField: CardInfoTextFieldDelegate {
      posted here. Thus we need to listen to the notification from the system first, wait until it is finished, and post ours afterwards.
      */
     private func addDateInvalidityObserver() {
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(notifyExpiryInvalidity),
-                                                         name: UIAccessibilityAnnouncementDidFinishNotification,
+                                                         name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
                                                          object: nil)
     }
 
@@ -111,6 +111,6 @@ extension CardTextField: CardInfoTextFieldDelegate {
     @objc private func notifyExpiryInvalidity() {
         let localizedString = Localization.InvalidExpirationDate.localizedStringWithComment("The expiration date entered is not valid")
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, localizedString)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }

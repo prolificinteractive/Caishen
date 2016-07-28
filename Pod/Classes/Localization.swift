@@ -28,7 +28,7 @@ internal enum Localization: String {
      
      - returns: The accessibility label for the provided text field.
      */
-    static func accessibilityLabelForTextField(textField: UITextField, comment: String? = nil) -> String? {
+    static func accessibilityLabelForTextField(_ textField: UITextField, comment: String? = nil) -> String? {
         switch textField {
         case is NumberInputTextField:
             return Localization.NumberInputTextFieldAccessibilityLabel.localizedStringWithComment(comment)
@@ -48,10 +48,10 @@ internal enum Localization: String {
      
      - returns: The localized string for the raw value of `self` in the Caishen bundle.
      */
-    func localizedStringWithComment(comment: String?) -> String {
+    func localizedStringWithComment(_ comment: String?) -> String {
         return NSLocalizedString(self.rawValue,
                                  tableName: Localization.StringsFileName.rawValue,
-                                 bundle: NSBundle(forClass: CardTextField.self),
+                                 bundle: Bundle(for: CardTextField.self),
                                  comment: comment ?? "")
     }
 }

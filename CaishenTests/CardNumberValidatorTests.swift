@@ -149,10 +149,10 @@ class CardNumberValidatorTests: XCTestCase {
      */
     func testInvalidLuhnTest() {
         var allValidCardNumbers = validVisaNumbers
-        allValidCardNumbers.appendContentsOf(self.validAmexNumbers)
-        allValidCardNumbers.appendContentsOf(self.validDinersClubNumbers)
-        allValidCardNumbers.appendContentsOf(self.validDiscoverNumbers)
-        allValidCardNumbers.appendContentsOf(self.validJCBNumbers)
+        allValidCardNumbers.append(contentsOf: self.validAmexNumbers)
+        allValidCardNumbers.append(contentsOf: self.validDinersClubNumbers)
+        allValidCardNumbers.append(contentsOf: self.validDiscoverNumbers)
+        allValidCardNumbers.append(contentsOf: self.validJCBNumbers)
         
         let invalidLuhnTestVisa: [String] = allValidCardNumbers.map({
             guard let intValue = Int64($0) else {
@@ -160,12 +160,12 @@ class CardNumberValidatorTests: XCTestCase {
                 return ""
             }
             
-            var randomNumber = random() % 10
+            var randomNumber = arc4random() % 10
             if randomNumber == 0 {
                 randomNumber = 1
             }
             
-            let changedLastDigit = (intValue + randomNumber) % 10
+            let changedLastDigit = (intValue + Int64(randomNumber)) % 10
             let invalidValue = intValue - (intValue % 10) + changedLastDigit
             
             return "\(invalidValue)"
