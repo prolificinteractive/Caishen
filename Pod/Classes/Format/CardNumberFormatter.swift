@@ -50,7 +50,7 @@ public final class CardNumberFormatter {
     public func format(cardNumber: String) -> String {
         let regex: RegularExpression
         
-        let cardType = cardTypeRegister.cardTypeForNumber(Number(rawValue: cardNumber))
+        let cardType = cardTypeRegister.cardTypeFor(number: Number(rawValue: cardNumber))
         do {
             let groups = cardType.numberGrouping
             var pattern = ""

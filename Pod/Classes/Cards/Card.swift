@@ -40,13 +40,13 @@ public struct Card {
      
      - returns: A card with the provided parameters.
      */
-    public static func create(number: String, cardVerificationCode cvc: String, expiry: String) throws -> Card {
+    public static func create(number: String, cvc: String, expiry: String) throws -> Card {
         // Create card number, cvc and expiry with the arguments provided
         let cardNumber = Number(rawValue: number)
         let cardCVC = CVC(rawValue: cvc)
         let cardExpiry = Expiry(string: expiry) ?? Expiry.invalid
 
-        return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry)
+        return Card(number: cardNumber, cvc: cardCVC, expiry: cardExpiry)
     }
 
     /**
@@ -56,10 +56,10 @@ public struct Card {
      - parameter cardVerificationCode: The card verification code as indicated on the user's payment card.
      - parameter expiryDate: The expiration date as indicated on the user's payment card
     */
-    public init(bankCardNumber: Number, cardVerificationCode: CVC, expiryDate: Expiry) {
-        self.bankCardNumber = bankCardNumber
-        self.cardVerificationCode = cardVerificationCode
-        self.expiryDate = expiryDate
+    public init(number: Number, cvc: CVC, expiry: Expiry) {
+        self.bankCardNumber = number
+        self.cardVerificationCode = cvc
+        self.expiryDate = expiry
     }
 
 }
