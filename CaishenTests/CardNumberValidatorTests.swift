@@ -76,37 +76,37 @@ class CardNumberValidatorTests: XCTestCase {
         print("Validate Visa")
         self.validVisaNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, Visa().name)
-            XCTAssertValid(Visa().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(Visa().validate(number: Number(rawValue: $0)))
         })
         
         print("Validate Amex")
         self.validAmexNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, AmericanExpress().name)
-            XCTAssertValid(AmericanExpress().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(AmericanExpress().validate(number: Number(rawValue: $0)))
         })
         
         print("Validate China UnionPay")
         self.validChinaUnionPayNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, ChinaUnionPay().name)
-            XCTAssertValid(ChinaUnionPay().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(ChinaUnionPay().validate(number: Number(rawValue: $0)))
         })
         
         print("Validate Diners Club")
         self.validDinersClubNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, DinersClub().name)
-            XCTAssertValid(DinersClub().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(DinersClub().validate(number: Number(rawValue: $0)))
         })
         
         print("Validate Discover")
         self.validDiscoverNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, Discover().name)
-            XCTAssertValid(Discover().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(Discover().validate(number: Number(rawValue: $0)))
         })
         
         print("Validate JCB")
         self.validJCBNumbers.forEach({
             XCTAssertEqual(CardTypeRegister.sharedCardTypeRegister.cardTypeForNumber(Number(rawValue: $0)).name, JCB().name, "Card number was interpreted as wrong kind: \($0)")
-            XCTAssertValid(JCB().validateNumber(Number(rawValue: $0)))
+            XCTAssertValid(JCB().validate(number: Number(rawValue: $0)))
         })
     }
     
@@ -127,21 +127,21 @@ class CardNumberValidatorTests: XCTestCase {
         let tooLongMasterCard = "55555555555544444"
         let tooLongChinaUnionPay = "62812636660717755"
         
-        XCTAssertIncompleteNumber(Visa().validateNumber(Number(rawValue: tooShortVisa)))
-        XCTAssertIncompleteNumber(AmericanExpress().validateNumber(Number(rawValue: tooShortAmex)))
-        XCTAssertIncompleteNumber(DinersClub().validateNumber(Number(rawValue: tooShortDiners)))
-        XCTAssertIncompleteNumber(Discover().validateNumber(Number(rawValue: tooShortDiscover)))
-        XCTAssertIncompleteNumber(JCB().validateNumber(Number(rawValue: tooShortJCB)))
-        XCTAssertIncompleteNumber(MasterCard().validateNumber(Number(rawValue: tooShortMasterCard)))
-        XCTAssertIncompleteNumber(ChinaUnionPay().validateNumber(Number(rawValue: tooShortChinaUnionPay)))
+        XCTAssertIncompleteNumber(Visa().validate(number: Number(rawValue: tooShortVisa)))
+        XCTAssertIncompleteNumber(AmericanExpress().validate(number: Number(rawValue: tooShortAmex)))
+        XCTAssertIncompleteNumber(DinersClub().validate(number: Number(rawValue: tooShortDiners)))
+        XCTAssertIncompleteNumber(Discover().validate(number: Number(rawValue: tooShortDiscover)))
+        XCTAssertIncompleteNumber(JCB().validate(number: Number(rawValue: tooShortJCB)))
+        XCTAssertIncompleteNumber(MasterCard().validate(number: Number(rawValue: tooShortMasterCard)))
+        XCTAssertIncompleteNumber(ChinaUnionPay().validate(number: Number(rawValue: tooShortChinaUnionPay)))
         
-        XCTAssertInvalidNumberForType(Visa().validateNumber(Number(rawValue: tooLongVisa)))
-        XCTAssertInvalidNumberForType(AmericanExpress().validateNumber(Number(rawValue: tooLongAmex)))
-        XCTAssertInvalidNumberForType(DinersClub().validateNumber(Number(rawValue: tooLongDiners)))
-        XCTAssertInvalidNumberForType(Discover().validateNumber(Number(rawValue: tooLongDiscover)))
-        XCTAssertInvalidNumberForType(JCB().validateNumber(Number(rawValue: tooLongJCB)))
-        XCTAssertInvalidNumberForType(MasterCard().validateNumber(Number(rawValue: tooLongMasterCard)))
-        XCTAssertInvalidNumberForType(ChinaUnionPay().validateNumber(Number(rawValue: tooLongChinaUnionPay)))
+        XCTAssertInvalidNumberForType(Visa().validate(number: Number(rawValue: tooLongVisa)))
+        XCTAssertInvalidNumberForType(AmericanExpress().validate(number: Number(rawValue: tooLongAmex)))
+        XCTAssertInvalidNumberForType(DinersClub().validate(number: Number(rawValue: tooLongDiners)))
+        XCTAssertInvalidNumberForType(Discover().validate(number: Number(rawValue: tooLongDiscover)))
+        XCTAssertInvalidNumberForType(JCB().validate(number: Number(rawValue: tooLongJCB)))
+        XCTAssertInvalidNumberForType(MasterCard().validate(number: Number(rawValue: tooLongMasterCard)))
+        XCTAssertInvalidNumberForType(ChinaUnionPay().validate(number: Number(rawValue: tooLongChinaUnionPay)))
     }
     
     /**
@@ -173,7 +173,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         
         invalidLuhnTestVisa.forEach({
-            XCTAssertLuhnTestFailed(Visa().validateNumber(Number(rawValue: $0)))
+            XCTAssertLuhnTestFailed(Visa().validate(number: Number(rawValue: $0)))
         })
     }
     

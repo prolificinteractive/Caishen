@@ -54,7 +54,7 @@ class ViewController: UIViewController, CardTextFieldDelegate, CardIOPaymentView
     }
     
     func userDidProvide(_ cardInfo: CardIOCreditCardInfo!, in paymentViewController: CardIOPaymentViewController!) {
-        cardNumberTextField.prefillCardInformation(cardInfo.cardNumber, month: Int(cardInfo.expiryMonth), year: Int(cardInfo.expiryYear), cvc: cardInfo.cvv)
+        cardNumberTextField.prefill(number: cardInfo.cardNumber, month: Int(cardInfo.expiryMonth), year: Int(cardInfo.expiryYear), cvc: cardInfo.cvv)
         paymentViewController.dismiss(animated: true, completion: nil)
     }
 

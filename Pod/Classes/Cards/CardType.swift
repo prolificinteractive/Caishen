@@ -59,7 +59,7 @@ public protocol CardType {
      
      - returns: The validation result for the CVC, taking the current card type into account, as different card issuers can provide CVCs in different formats.
      */
-    func validateCVC(_ cvc: CVC) -> CardValidationResult
+    func validate(cvc: CVC) -> CardValidationResult
 
     
     /** 
@@ -84,7 +84,7 @@ public protocol CardType {
      
      - returns: The result of the card number validation.
      */
-    func validateNumber(_ number: Number) -> CardValidationResult
+    func validate(number: Number) -> CardValidationResult
 
     /**
      Validates the card's expiry date, checking whether the card has expired or not.
@@ -93,7 +93,7 @@ public protocol CardType {
      
      - returns: The result of the card expiration date validation.
      */
-    func validateExpiry(_ expiry: Expiry) -> CardValidationResult 
+    func validate(expiry: Expiry) -> CardValidationResult
 
     /**
      Returns whether or not `self` is equal to another `CardType`.
@@ -102,12 +102,12 @@ public protocol CardType {
      
      - returns: Whether or not `self` is equal to the provided `cardType`.
      */
-    func isEqualTo(_ cardType: CardType) -> Bool
+    func isEqual(to cardType: CardType) -> Bool
 }
 
 extension CardType {
     
-    public func isEqualTo(_ cardType: CardType) -> Bool {
+    public func isEqual(to cardType: CardType) -> Bool {
         return cardType.name == self.name
     }
     
@@ -127,7 +127,7 @@ extension CardType {
         return numberGrouping.reduce(0) { $0 + $1 }
     }
 
-    public func validateCVC(_ cvc: CVC) -> CardValidationResult {
+    public func validate(cvc: CVC) -> CardValidationResult {
 
         guard requiresCVC else {
             return .Valid
@@ -146,13 +146,13 @@ extension CardType {
         return .Valid
     }
 
-    public func validateNumber(_ cardNumber: Number) -> CardValidationResult {
-        return lengthMatchesType(cardNumber.length)
-            .union(numberIsNumeric(cardNumber))
-            .union(numberIsValidLuhn(cardNumber))
+    public func validate(number: Number) -> CardValidationResult {
+        return lengthMatchesType(number.length)
+            .union(numberIsNumeric(number))
+            .union(numberIsValidLuhn(number))
     }
 
-    public func validateExpiry(_ expiry: Expiry) -> CardValidationResult {
+    public func validate(expiry: Expiry) -> CardValidationResult {
         guard requiresExpiry else {
             return .Valid
         }
@@ -226,14 +226,14 @@ extension CardType {
         - or the card validation failed because of the Luhn test or insufficient card number length (both of which are irrelevant for incomplete card numbers).
      */
     public func checkCardNumberPartiallyValid(_ cardNumber: Number) -> CardValidationResult {
-        let validationResult = validateNumber(cardNumber)
+        let validationResult = validate(number: cardNumber)
         let completeNumberButLuhnTestFailed = !validationResult.isSuperset(of: CardValidationResult.NumberIncomplete) && validationResult.isSuperset(of: CardValidationResult.LuhnTestFailed)
 
         if completeNumberButLuhnTestFailed {
             return validationResult
         } else {
             return
-                self.validateNumber(cardNumber)
+                self.validate(number: cardNumber)
                     .subtracting(.NumberIncomplete)
                     .subtracting(.LuhnTestFailed)
         }

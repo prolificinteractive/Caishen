@@ -29,6 +29,6 @@ public class CVCInputTextField: DetailInputTextField {
         }
         
         let cvc = CVC(rawValue: cvcString)
-        return (cardType?.validateCVC(cvc) == .Valid) ?? false || partiallyValid && (cardType?.validateCVC(cvc) == .CVCIncomplete) ?? false
+        return (cardType?.validate(cvc: cvc) == .Valid) ?? false || partiallyValid && (cardType?.validate(cvc: cvc) == .CVCIncomplete) ?? false
     }
 }

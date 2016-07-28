@@ -16,11 +16,11 @@ class CardCVCValidatorTests: XCTestCase {
         let invalidLengthObject1 = CVC(rawValue: "23")
         let invalidLengthObject2 = CVC(rawValue: "2345")
         
-        XCTAssertValid(Visa().validateCVC(validObject))
-        XCTAssertValid(AmericanExpress().validateCVC(invalidLengthObject2))
-        XCTAssertIncompleteCVC(AmericanExpress().validateCVC(validObject))
-        XCTAssertIncompleteCVC(Visa().validateCVC(invalidLengthObject1))
-        XCTAssertInvalidCVC(Visa().validateCVC(invalidLengthObject2))
+        XCTAssertValid(Visa().validate(cvc: validObject))
+        XCTAssertValid(AmericanExpress().validate(cvc: invalidLengthObject2))
+        XCTAssertIncompleteCVC(AmericanExpress().validate(cvc: validObject))
+        XCTAssertIncompleteCVC(Visa().validate(cvc: invalidLengthObject1))
+        XCTAssertInvalidCVC(Visa().validate(cvc: invalidLengthObject2))
     }
     
     func testValidateCharacters() {
@@ -28,9 +28,9 @@ class CardCVCValidatorTests: XCTestCase {
         let invalidCharacterObject1 = CVC(rawValue: "23a")
         let invalidCharacterObject2 = CVC(rawValue: "2.5")
         
-        XCTAssertValid(Visa().validateCVC(validObject))
-        XCTAssertInvalidCVC(Visa().validateCVC(invalidCharacterObject1))
-        XCTAssertInvalidCVC(Visa().validateCVC(invalidCharacterObject2))
+        XCTAssertValid(Visa().validate(cvc: validObject))
+        XCTAssertInvalidCVC(Visa().validate(cvc: invalidCharacterObject1))
+        XCTAssertInvalidCVC(Visa().validate(cvc: invalidCharacterObject2))
     }
     
 }

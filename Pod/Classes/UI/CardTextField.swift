@@ -273,7 +273,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         firstObjectInNib.frame = bounds
         addSubview(firstObjectInNib)
         
-        cardImageView?.image = cardTypeImageStore.imageForCardType(UnknownCardType())
+        cardImageView?.image = cardTypeImageStore.imageFor(cardType: UnknownCardType())
         cardImageView?.layer.cornerRadius = 5.0
         cardImageView?.layer.shadowColor = UIColor.black().cgColor
         cardImageView?.layer.shadowRadius = 2
@@ -365,10 +365,10 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Adds voice over accessibility support for all text fields
      */
     private func setupAccessibilityLabels() {
-        setupAccessibilityLabelForTextField(numberInputTextField)
-        setupAccessibilityLabelForTextField(cvcTextField)
-        setupAccessibilityLabelForTextField(monthTextField)
-        setupAccessibilityLabelForTextField(yearTextField)
+        setupAccessibilityLabelFor(textField: numberInputTextField)
+        setupAccessibilityLabelFor(textField: cvcTextField)
+        setupAccessibilityLabelFor(textField: monthTextField)
+        setupAccessibilityLabelFor(textField: yearTextField)
     }
     
     /**
@@ -376,7 +376,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      
      - parameter textField: a text field that needs support for voice over accessibility
      */
-    private func setupAccessibilityLabelForTextField(_ textField: UITextField) {
+    private func setupAccessibilityLabelFor(textField: UITextField) {
         textField.accessibilityLabel = Localization.accessibilityLabelForTextField(textField,
                                                                                    comment: "Accessibility label for \(String(textField))")
     }
@@ -468,9 +468,9 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
                 return .UnknownType
             }
 
-            return cardType.validateNumber(self.card.bankCardNumber)
-                .union(cardType.validateCVC(self.card.cardVerificationCode))
-                .union(cardType.validateExpiry(self.card.expiryDate))
+            return cardType.validate(number: self.card.bankCardNumber)
+                .union(cardType.validate(cvc: self.card.cardVerificationCode))
+                .union(cardType.validate(expiry: self.card.expiryDate))
         }()
 
         cardTextFieldDelegate?.cardTextField(self,
@@ -507,7 +507,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     internal func showCardImage() {
         let cardType = cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
-        let cardTypeImage = cardTypeImageStore.imageForCardType(cardType)
+        let cardTypeImage = cardTypeImageStore.imageFor(cardType: cardType)
 
         cardImageView?.image = cardTypeImage
     }
@@ -517,7 +517,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     internal func showCVCImage() {
         let cardType = cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
-        let cvcImage = cardTypeImageStore.cvcImageForCardType(cardType)
+        let cvcImage = cardTypeImageStore.cvcImageFor(cardType: cardType)
         
         cardImageView?.image = cvcImage
         cvcTextField?.cardType = cardType

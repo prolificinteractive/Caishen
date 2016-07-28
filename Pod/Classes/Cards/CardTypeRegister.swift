@@ -53,7 +53,7 @@ public class CardTypeRegister {
      - parameter cardType: The card type that should be contained in this card type register.
      */
     public func registerCardType(_ cardType: CardType) {
-        if registeredCardTypes.contains({ $0.isEqualTo(cardType) }) {
+        if registeredCardTypes.contains({ $0.isEqual(to: cardType) }) {
             return
         }
 
@@ -66,7 +66,7 @@ public class CardTypeRegister {
      - parameter cardType: The card type that should be removed from this card type register.
      */
     public func unregisterCardType(_ cardType: CardType) {
-        registeredCardTypes = registeredCardTypes.filter { !$0.isEqualTo(cardType) }
+        registeredCardTypes = registeredCardTypes.filter { !$0.isEqual(to: cardType) }
     }
     
     /**
