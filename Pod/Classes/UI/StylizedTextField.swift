@@ -19,10 +19,10 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
     public var borderWidth: CGFloat = 0 {
         didSet {
             if borderWidth >= 0 {
-                self.borderStyle = .None
+                self.borderStyle = .none
                 self.layer.borderWidth = CGFloat(borderWidth)
             } else {
-                self.borderStyle = .RoundedRect
+                self.borderStyle = .roundedRect
                 self.layer.borderWidth = 0
             }
         }
@@ -44,9 +44,9 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
      If `borderWidth` has been set, changes to this parameter change the color of the border of `self`.
      */
     @IBInspectable
-    public var borderColor: UIColor = UIColor.blackColor() {
+    public var borderColor: UIColor = UIColor.black() {
         didSet {
-            self.layer.borderColor = self.borderColor.CGColor
+            self.layer.borderColor = self.borderColor.cgColor
         }
     }
     
@@ -60,7 +60,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
             if (text ?? "").isEmpty {
                 deleteBackwardCallback?(self)
             } else if text == UITextField.emptyTextFieldCharacter {
-                drawPlaceholderInRect(textInputView.bounds)
+                drawPlaceholder(in: textInputView.bounds)
             }
             setNeedsDisplay()
         }
@@ -69,7 +69,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
     /**
      The color in which text flashes, when the user is about to enter an invalid card number.
      */
-    @IBInspectable public var invalidInputColor: UIColor = UIColor.redColor()
+    @IBInspectable public var invalidInputColor: UIColor = UIColor.red()
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -90,19 +90,19 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
         return super.becomeFirstResponder()
     }
     
-    public override func drawRect(rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         if text == "" || text == UITextField.emptyTextFieldCharacter {
-            super.drawPlaceholderInRect(rect)
+            super.drawPlaceholder(in: rect)
         } else {
-            super.drawRect(rect)
+            super.draw(rect)
         }
     }
     
-    public override func drawPlaceholderInRect(rect: CGRect) {
+    public override func drawPlaceholder(in rect: CGRect) {
         
     }
     
-    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
 }

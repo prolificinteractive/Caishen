@@ -63,7 +63,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     @IBOutlet public weak var cardInfoView: UIView?
 
     /// The image store for the card number text field.
-    public var cardTypeImageStore: CardTypeImageStore = NSBundle(forClass: CardTextField.self)
+    public var cardTypeImageStore: CardTypeImageStore = Bundle(for: CardTextField.self)
 
     public var cardTextFieldDelegate: CardTextFieldDelegate? {
         didSet {
@@ -185,7 +185,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     }
     #endif
     
-    public override var attributedPlaceholder: NSAttributedString? {
+    public override var attributedPlaceholder: AttributedString? {
         didSet {
             numberInputTextField?.attributedPlaceholder = attributedPlaceholder
             super.attributedPlaceholder = nil
@@ -205,25 +205,25 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     internal var hideExpiryTextFields: Bool = false {
         didSet {
-            monthTextField.hidden = hideExpiryTextFields
-            yearTextField.hidden = hideExpiryTextFields
-            slashLabel.hidden = hideExpiryTextFields
+            monthTextField.isHidden = hideExpiryTextFields
+            yearTextField.isHidden = hideExpiryTextFields
+            slashLabel.isHidden = hideExpiryTextFields
         }
     }
     
     internal var hideCVCTextField: Bool = false {
         didSet {
-            cvcTextField.hidden = hideCVCTextField
+            cvcTextField.isHidden = hideCVCTextField
         }
     }
     
     /// Computed variable that returns whether or not the view should use right to left layout design. On iOS 9 and newer, this will be based on the interface layout of `self`, whereas this property is not available on older versions of iOS and therefor uses the character direction of the device language.
     internal var isRightToLeftLanguage: Bool {
         if #available(iOS 9.0, *) {
-            return UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(semanticContentAttribute) == .RightToLeft
+            return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
         } else {
-            let isoCode = NSLocale.autoupdatingCurrentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
-            return NSLocale.characterDirectionForLanguage(isoCode) == NSLocaleLanguageDirection.RightToLeft
+            let isoCode = Locale.autoupdatingCurrent.object(forKey: Locale.Key.languageCode) as? String ?? ""
+            return Locale.characterDirection(forLanguage: isoCode) == Locale.LanguageDirection.rightToLeft
         }
     }
     
@@ -231,7 +231,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.localeDidChange), name: NSCurrentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.localeDidChange), name: Locale.currentLocaleDidChangeNotification, object: nil)
         #if !TARGET_INTERFACE_BUILDER
             setupView()
         #endif
@@ -239,14 +239,14 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.localeDidChange), name: NSCurrentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.localeDidChange), name: Locale.currentLocaleDidChangeNotification, object: nil)
         #if !TARGET_INTERFACE_BUILDER
             setupView()
         #endif
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSCurrentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Locale.currentLocaleDidChangeNotification, object: nil)
     }
     
     /**
@@ -264,7 +264,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             fatalError("The nib is expected to contain a UIView as root element.")
         }
         
-        numberInputTextField.contentMode = UIViewContentMode.Redraw
+        numberInputTextField.contentMode = UIViewContentMode.redraw
         
         clipsToBounds = true
         
@@ -275,7 +275,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         
         cardImageView?.image = cardTypeImageStore.imageForCardType(UnknownCardType())
         cardImageView?.layer.cornerRadius = 5.0
-        cardImageView?.layer.shadowColor = UIColor.blackColor().CGColor
+        cardImageView?.layer.shadowColor = UIColor.black().cgColor
         cardImageView?.layer.shadowRadius = 2
         cardImageView?.layer.shadowOffset = CGSize(width: 0, height: 0)
         cardImageView?.layer.shadowOpacity = 0.2
@@ -289,12 +289,12 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         [firstObjectInNib, cardInfoView].forEach({$0?.gestureRecognizers = []})
         
         let hideCardNumberSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(moveCardNumberOutAnimated))
-        hideCardNumberSwipeRecognizer.direction = isRightToLeftLanguage ? .Right : .Left
+        hideCardNumberSwipeRecognizer.direction = isRightToLeftLanguage ? .right : .left
         firstObjectInNib.addGestureRecognizer(hideCardNumberSwipeRecognizer)
         
         [firstObjectInNib, cardInfoView].forEach({
             let showCardNumberSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(moveCardNumberInAnimated))
-            showCardNumberSwipeRecognizer.direction = isRightToLeftLanguage ? .Left : .Right
+            showCardNumberSwipeRecognizer.direction = isRightToLeftLanguage ? .left : .right
             $0?.addGestureRecognizer(showCardNumberSwipeRecognizer)
         })
         
@@ -341,23 +341,23 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         // counterpart to `right` (in a left-to-right script) that changes based on localization
         // and can be set in a Nib.
         if isRightToLeftLanguage {
-            cvcTextField.textAlignment = .Left
-            monthTextField.textAlignment = .Left
+            cvcTextField.textAlignment = .left
+            monthTextField.textAlignment = .left
         } else {
-            cvcTextField.textAlignment = .Right
-            monthTextField.textAlignment = .Right
+            cvcTextField.textAlignment = .right
+            monthTextField.textAlignment = .right
         }
         
         let textFields: [UITextField?] = [numberInputTextField, cvcTextField, monthTextField, yearTextField]
         textFields.forEach({
-            $0?.keyboardType = .NumberPad
+            $0?.keyboardType = .numberPad
             $0?.textColor = textColor
             $0?.font = font
             $0?.keyboardAppearance = keyboardAppearance
-            $0?.secureTextEntry = secureTextEntry
+            $0?.isSecureTextEntry = isSecureTextEntry
         })
         
-        super.textColor = UIColor.clearColor()
+        super.textColor = UIColor.clear()
         super.placeholder = nil
     }
     
@@ -376,7 +376,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      
      - parameter textField: a text field that needs support for voice over accessibility
      */
-    private func setupAccessibilityLabelForTextField(textField: UITextField) {
+    private func setupAccessibilityLabelForTextField(_ textField: UITextField) {
         textField.accessibilityLabel = Localization.accessibilityLabelForTextField(textField,
                                                                                    comment: "Accessibility label for \(String(textField))")
     }
@@ -386,12 +386,12 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     private func setupTargetsForEditinBegin() {
         // Show the full number text field, if editing began on it
-        numberInputTextField?.addTarget(self, action: #selector(moveCardNumberInAnimated), forControlEvents: UIControlEvents.EditingDidBegin)
+        numberInputTextField?.addTarget(self, action: #selector(moveCardNumberInAnimated), for: UIControlEvents.editingDidBegin)
         
         // Show CVC image if the cvcTextField is selected, show card image otherwise
         let nonCVCTextFields: [UITextField?] = [numberInputTextField, monthTextField, yearTextField]
-        nonCVCTextFields.forEach({$0?.addTarget(self, action: #selector(showCardImage), forControlEvents: .EditingDidBegin)})
-        cvcTextField?.addTarget(self, action: #selector(showCVCImage), forControlEvents: .EditingDidBegin)
+        nonCVCTextFields.forEach({$0?.addTarget(self, action: #selector(showCardImage), for: .editingDidBegin)})
+        cvcTextField?.addTarget(self, action: #selector(showCVCImage), for: .editingDidBegin)
     }
     
     /**
@@ -409,14 +409,14 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             accessoryButton?.alpha = 0
             return
         }
-        accessoryButton?.addTarget(self, action: #selector(buttonReceivedAction), forControlEvents: .TouchUpInside)
+        accessoryButton?.addTarget(self, action: #selector(buttonReceivedAction), for: .touchUpInside)
         accessoryButton?.alpha = 1.0
-        accessoryButton?.imageView?.contentMode = .ScaleAspectFit
+        accessoryButton?.imageView?.contentMode = .scaleAspectFit
         
         if let buttonImage = cardTextFieldDelegate?.cardTextFieldShouldShowAccessoryImage(self) {
-            let scaledImage = buttonImage.resizableImageWithCapInsets(UIEdgeInsetsZero, resizingMode: .Stretch)
+            let scaledImage = buttonImage.resizableImage(withCapInsets: UIEdgeInsetsZero, resizingMode: .stretch)
             accessoryButton?.titleLabel?.text = nil
-            accessoryButton?.setImage(scaledImage, forState: .Normal)
+            accessoryButton?.setImage(scaledImage, for: UIControlState())
             accessoryButton?.tintColor = numberInputTextField?.textColor
         }
         
@@ -425,8 +425,8 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     // MARK: - View lifecycle
     
-    public override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    public override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         if let secondaryView = cardInfoView {
             if secondaryView.superview != superview {
                 superview?.addSubview(secondaryView)
@@ -453,8 +453,8 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      You can override this function to provide the NSBundle for your own Nib. If you do so, please override 'getNibName' as well to provide the right Nib to load the nib file.
      */
-    public func getNibBundle() -> NSBundle {
-        return NSBundle(forClass: CardTextField.self)
+    public func getNibBundle() -> Bundle {
+        return Bundle(for: CardTextField.self)
     }
     
     // MARK: - CardNumberInputTextFieldDelegate
@@ -478,14 +478,14 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
                                              withValidationResult: result)
     }
     
-    @objc public func numberInputTextFieldDidChangeText(numberInputTextField: NumberInputTextField) {
+    @objc public func numberInputTextFieldDidChangeText(_ numberInputTextField: NumberInputTextField) {
         showCardImage()
         notifyDelegate()
         hideExpiryTextFields = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresExpiry
         hideCVCTextField = !cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber).requiresCVC
     }
     
-    public func numberInputTextFieldDidComplete(numberInputTextField: NumberInputTextField) {
+    public func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField) {
         moveCardNumberOutAnimated()
         
         notifyDelegate()
@@ -529,18 +529,18 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         super.layoutSubviews()
         
         // If moving to a larger screen size and not showing the detail view, make sure that it is outside the view.
-        if let transform = cardInfoView?.transform where !CGAffineTransformIsIdentity(transform) {
+        if let transform = cardInfoView?.transform where !transform.isIdentity {
             translateCardNumberIn()
         }
     }
     
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Detect touches in card number text field as long as the detail view is on top of it
         touches.forEach({ touch -> () in
-            let point = touch.locationInView(numberInputTextField)
-            if (numberInputTextField?.pointInside(point, withEvent: event) ?? false) && [monthTextField,yearTextField,cvcTextField, slashLabel].reduce(true, combine: { (currentValue: Bool, view: UIView?) -> Bool in
-                let pointInView = touch.locationInView(view)
-                return currentValue && !(view?.pointInside(pointInView, withEvent: event) ?? false)
+            let point = touch.location(in: numberInputTextField)
+            if (numberInputTextField?.point(inside: point, with: event) ?? false) && [monthTextField,yearTextField,cvcTextField, slashLabel].reduce(true, combine: { (currentValue: Bool, view: UIView?) -> Bool in
+                let pointInView = touch.location(in: view)
+                return currentValue && !(view?.point(inside: pointInView, with: event) ?? false)
             }) {
                 numberInputTextField?.becomeFirstResponder()
             }
@@ -567,7 +567,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      
      - returns: The accessibility element at the specified index, or nil if none exists
      */
-    public override func accessibilityElementAtIndex(index: Int) -> AnyObject? {
+    public override func accessibilityElement(at index: Int) -> AnyObject? {
         switch index {
         case 0:
             return numberInputTextField

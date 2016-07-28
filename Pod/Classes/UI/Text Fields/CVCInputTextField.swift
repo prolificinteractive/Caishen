@@ -23,7 +23,7 @@ public class CVCInputTextField: DetailInputTextField {
      
      - returns: True, if the card validation code is valid.
      */
-    internal override func isInputValid(cvcString: String, partiallyValid: Bool) -> Bool {
+    internal override func isInputValid(_ cvcString: String, partiallyValid: Bool) -> Bool {
         if cvcString.characters.count == 0 && partiallyValid {
             return true
         }

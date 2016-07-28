@@ -16,12 +16,12 @@ public protocol NumberInputTextFieldDelegate {
      
      - parameter numberInputTextField: The `NumberInputTextField` that was used to enter a card number.
      */
-    func numberInputTextFieldDidComplete(numberInputTextField: NumberInputTextField)
+    func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField)
     
     /**
      Called when the user changed the text in the `NumberInputTextField`.
      
      - parameter numberInputTextField: The `NumberInputTextField` whose text was changed.
      */
-    func numberInputTextFieldDidChangeText(numberInputTextField: NumberInputTextField)
+    func numberInputTextFieldDidChangeText(_ numberInputTextField: NumberInputTextField)
 }

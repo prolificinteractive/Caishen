@@ -18,7 +18,7 @@ import UIKit
  ````
  let result = CardValidationResult.NumberDoesNotMatchType.union(CardValidationResult.CardExpired)
 */
-public struct CardValidationResult: OptionSetType {
+public struct CardValidationResult: OptionSet {
     public let rawValue: UInt64
     
     public init(rawValue: UInt64) {
@@ -87,43 +87,43 @@ extension CardValidationResult: CustomStringConvertible {
             strings.append("Valid")
         }
 
-        if isSupersetOf(.NumberDoesNotMatchType) {
+        if isSuperset(of: .NumberDoesNotMatchType) {
             strings.append("Number does not match type")
         }
 
-        if isSupersetOf(.CVCIncomplete) {
+        if isSuperset(of: .CVCIncomplete) {
             strings.append("CVC is too short")
         }
 
-        if isSupersetOf(.InvalidCVC) {
+        if isSuperset(of: .InvalidCVC) {
             strings.append("CVC is invalid")
         }
 
-        if isSupersetOf(.CardExpired) {
+        if isSuperset(of: .CardExpired) {
             strings.append("Card has expired")
         }
 
-        if isSupersetOf(.InvalidExpiry) {
+        if isSuperset(of: .InvalidExpiry) {
             strings.append("Expiration date is not valid")
         }
 
-        if isSupersetOf(.NumberIsNotNumeric) {
+        if isSuperset(of: .NumberIsNotNumeric) {
             strings.append("Card number is not numeric")
         }
 
-        if isSupersetOf(.LuhnTestFailed) {
+        if isSuperset(of: .LuhnTestFailed) {
             strings.append("Luhn test failed for card number")
         }
 
-        if isSupersetOf(.NumberIncomplete) {
+        if isSuperset(of: .NumberIncomplete) {
             strings.append("Card number seems to be incomplete")
         }
 
-        if isSupersetOf(.UnknownType) {
+        if isSuperset(of: .UnknownType) {
             strings.append("Card type could not be inferred")
         }
 
-        if isSupersetOf(.NumberTooLong) {
+        if isSuperset(of: .NumberTooLong) {
             strings.append("Card number is too long")
         }
 

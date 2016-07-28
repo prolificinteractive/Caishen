@@ -17,14 +17,14 @@ public class DetailInputTextField: StylizedTextField {
     
     public var cardInfoTextFieldDelegate: CardInfoTextFieldDelegate?
     
-    public func textFieldDidBeginEditing(textField: UITextField) {
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField.text ?? "").isEmpty {
             textField.text = UITextField.emptyTextFieldCharacter
         }
     }
     
-    public override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let newText = NSString(string: (textField.text ?? "")).stringByReplacingCharactersInRange(range, withString: string).stringByReplacingOccurrencesOfString(UITextField.emptyTextFieldCharacter, withString: "")
+    public override func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newText = NSString(string: (textField.text ?? "")).replacingCharacters(in: range, with: string).replacingOccurrences(of: UITextField.emptyTextFieldCharacter, with: "")
         
         let deletingLastCharacter = !(textField.text ?? "").isEmpty && textField.text != UITextField.emptyTextFieldCharacter && newText.isEmpty
         if deletingLastCharacter {
@@ -53,7 +53,7 @@ public class DetailInputTextField: StylizedTextField {
         return false
     }
     
-    public func prefillInformation(info: String) {
+    public func prefillInformation(_ info: String) {
         if isInputValid(info, partiallyValid: false) {
             text = info
             cardInfoTextFieldDelegate?.textField(self, didEnterValidInfo: info)
@@ -63,18 +63,18 @@ public class DetailInputTextField: StylizedTextField {
         }
     }
     
-    private func splitText(text: String) -> (currentText: String, overflowText: String) {
+    private func splitText(_ text: String) -> (currentText: String, overflowText: String) {
         let hasOverflow = text.characters.count > expectedInputLength
         let index = (hasOverflow) ?
-            text.startIndex.advancedBy(expectedInputLength) :
-            text.startIndex.advancedBy(text.characters.count)
-        return (text.substringToIndex(index), text.substringFromIndex(index))
+            text.characters.index(text.startIndex, offsetBy: expectedInputLength) :
+            text.characters.index(text.startIndex, offsetBy: text.characters.count)
+        return (text.substring(to: index), text.substring(from: index))
     }
 }
 
 extension DetailInputTextField: AutoCompletingTextField {
 
-    func autocompleteText(text: String) -> String {
+    func autocompleteText(_ text: String) -> String {
         return text
     }
 }
@@ -87,7 +87,7 @@ extension DetailInputTextField: TextFieldValidation {
         return 2
     }
 
-    func isInputValid(input: String, partiallyValid: Bool) -> Bool {
+    func isInputValid(_ input: String, partiallyValid: Bool) -> Bool {
         return true
     }
 }

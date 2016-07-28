@@ -24,5 +24,5 @@ internal protocol TextFieldValidation {
      
      - returns: True, if the input is valid.
      */
-    func isInputValid(input: String, partiallyValid: Bool) -> Bool
+    func isInputValid(_ input: String, partiallyValid: Bool) -> Bool
 }

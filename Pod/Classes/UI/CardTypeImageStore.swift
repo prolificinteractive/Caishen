@@ -18,7 +18,7 @@ public protocol CardTypeImageStore {
      
      - returns: The image for the specified card type or nil, if no image was provided for this card type.
      */
-    func imageForCardType(cardType: CardType) -> UIImage?
+    func imageForCardType(_ cardType: CardType) -> UIImage?
     
     /**
      Provides an image for the CVC of a specific card type. The position of a CVC on a card may vary based on the card issuer, so that different card types may provide different images to indicate the location of the CVC on the card. This image will be shown in a `CardTextField`'s image view once the user starts entering the CVC.
@@ -27,17 +27,17 @@ public protocol CardTypeImageStore {
      
      - returns: The image for the CVC of the specified card type or nil, if no image was provided for this card type.
      */
-    func cvcImageForCardType(cardType: CardType) -> UIImage?
+    func cvcImageForCardType(_ cardType: CardType) -> UIImage?
 
 }
 
-extension NSBundle: CardTypeImageStore {
+extension Bundle: CardTypeImageStore {
     
-    public func imageForCardType(cardType: CardType) -> UIImage? {
-        return UIImage(named: cardType.name, inBundle: self, compatibleWithTraitCollection: nil)
+    public func imageForCardType(_ cardType: CardType) -> UIImage? {
+        return UIImage(named: cardType.name, in: self, compatibleWith: nil)
     }
 
-    public func cvcImageForCardType(cardType: CardType) -> UIImage? {
+    public func cvcImageForCardType(_ cardType: CardType) -> UIImage? {
         let cvcImageName: String
         if cardType.isEqualTo(AmericanExpress()) {
             cvcImageName = "AmexCVC"
@@ -45,7 +45,7 @@ extension NSBundle: CardTypeImageStore {
             cvcImageName = "CVC"
         }
         
-        return UIImage(named: cvcImageName, inBundle: self, compatibleWithTraitCollection: nil)
+        return UIImage(named: cvcImageName, in: self, compatibleWith: nil)
     }
 
 }

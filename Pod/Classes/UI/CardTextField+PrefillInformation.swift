@@ -18,7 +18,7 @@ public extension CardTextField {
      - parameter year:       The year that should be shown in the year input field.
      - parameter cvc:        The CVC that should be shown in the CVC input field.
      */
-    public func prefillCardInformation(cardNumber: String?, month: Int?, year: Int?, cvc: String?) {
+    public func prefillCardInformation(_ cardNumber: String?, month: Int?, year: Int?, cvc: String?) {
         if let year = year {
             var trimmedYear = year
             if year > 100 {
@@ -43,9 +43,9 @@ public extension CardTextField {
             cvcTextField?.prefillInformation(cvc)
         }
         
-        NSOperationQueue().addOperationWithBlock({
-            NSThread.sleepForTimeInterval(0.5)
-            NSOperationQueue.mainQueue().addOperationWithBlock({ [weak self] _ in
+        OperationQueue().addOperation({
+            Thread.sleep(forTimeInterval: 0.5)
+            OperationQueue.main.addOperation({ [weak self] _ in
                 self?.moveCardNumberOutAnimated()
             })
         })

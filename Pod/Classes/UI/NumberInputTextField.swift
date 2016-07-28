@@ -46,7 +46,7 @@ public class NumberInputTextField: StylizedTextField {
             }
             
             let isUnformatted = (placeholder == self.cardNumberFormatter.unformattedCardNumber(placeholder))
-            let isCreditString = (placeholder.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789\(self.cardNumberFormatter.separator)").invertedSet) == nil)
+            let isCreditString = (placeholder.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789\(self.cardNumberFormatter.separator)").inverted) == nil)
             
             // If this is a Credit Card placeholder and wasn't already formatted, format it
             if isCreditString && isUnformatted && cardNumberSeparator != "" {
@@ -109,11 +109,11 @@ public class NumberInputTextField: StylizedTextField {
     
     // MARK: - UITextFieldDelegate
     
-    public override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    public override func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Current text in text field, formatted and unformatted:
         let textFieldTextFormatted = NSString(string: textField.text ?? "")
         // Text in text field after applying changes, formatted and unformatted:
-        let newTextFormatted = textFieldTextFormatted.stringByReplacingCharactersInRange(range, withString: string)
+        let newTextFormatted = textFieldTextFormatted.replacingCharacters(in: range, with: string)
         let newTextUnformatted = cardNumberFormatter.unformattedCardNumber(newTextFormatted)
         
         // Set the text color to invalid - this will be changed to `validTextColor` later in this method if the input was valid
@@ -164,7 +164,7 @@ public class NumberInputTextField: StylizedTextField {
      
      - parameter cardNumber: The card number which should be displayed in `self`.
      */
-    public func prefillInformation(cardNumber: String) {
+    public func prefillInformation(_ cardNumber: String) {
         let unformattedCardNumber = String(cardNumber.characters.filter({$0.isNumeric()}))
         let cardNumber = Number(rawValue: unformattedCardNumber)
         let type = cardTypeRegister.cardTypeForNumber(cardNumber)
@@ -189,18 +189,18 @@ public class NumberInputTextField: StylizedTextField {
      
      - returns: A rect indicating the location and bounds of the text within the text field, or nil, if an invalid range has been entered.
      */
-    private func rectForTextRange(range: NSRange, inTextField textField: UITextField) -> CGRect? {
-        guard let rangeStart = textField.positionFromPosition(textField.beginningOfDocument, offset: range.location) else {
+    private func rectForTextRange(_ range: NSRange, inTextField textField: UITextField) -> CGRect? {
+        guard let rangeStart = textField.position(from: textField.beginningOfDocument, offset: range.location) else {
             return nil
         }
-        guard let rangeEnd = textField.positionFromPosition(rangeStart, offset: range.length) else {
+        guard let rangeEnd = textField.position(from: rangeStart, offset: range.length) else {
             return nil
         }
-        guard let textRange = textField.textRangeFromPosition(rangeStart, toPosition: rangeEnd) else {
+        guard let textRange = textField.textRange(from: rangeStart, to: rangeEnd) else {
             return nil
         }
         
-        return textField.firstRectForRange(textRange)
+        return textField.firstRect(for: textRange)
     }
     
     /**
@@ -209,7 +209,7 @@ public class NumberInputTextField: StylizedTextField {
      - returns: The CGRect in `self` that contains the last group of the card number.
      */
     public func rectForLastGroup() -> CGRect? {
-        guard let lastGroupLength = text?.componentsSeparatedByString(cardNumberFormatter.separator).last?.characters.count else {
+        guard let lastGroupLength = text?.components(separatedBy: cardNumberFormatter.separator).last?.characters.count else {
             return nil
         }
         guard let textLength = text?.characters.count else {
@@ -230,9 +230,9 @@ public class NumberInputTextField: StylizedTextField {
      posted here. Thus we need to listen to the notification from the system first, wait until it is finished, and post ours afterwards.
      */
     private func addNumberInvalidityObserver() {
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(notifyNumberInvalidity),
-                                                         name: UIAccessibilityAnnouncementDidFinishNotification,
+                                                         name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
                                                          object: nil)
     }
     
@@ -242,6 +242,6 @@ public class NumberInputTextField: StylizedTextField {
     @objc private func notifyNumberInvalidity() {
         let localizedString = Localization.InvalidCardNumber.localizedStringWithComment("The expiration date entered is not valid")
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, localizedString)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
