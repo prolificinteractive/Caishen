@@ -161,8 +161,9 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             let cardExpiry =
                 Expiry(month: monthTextField.text ?? "", year: yearTextField.text ?? "")
                     ?? Expiry.invalid
-
-            return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry)
+            let cardType = cardTypeRegister.cardTypeForNumber(numberInputTextField.cardNumber)
+            let franchise = Franchise.init(rawValue: cardType.name)
+            return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry, franchise: franchise)
         }
     }
     
