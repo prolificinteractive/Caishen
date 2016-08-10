@@ -15,18 +15,18 @@ public struct UnknownCardType: CardType {
     public let CVCLength = 0
     public let identifyingDigits: Set<Int> = []
 
-    public func validate(number: Number) -> CardValidationResult {
+    public func validate(_ number: Number) -> CardValidationResult {
         return CardValidationResult.UnknownType
             .union(lengthMatchesType(number.length))
             .union(numberIsNumeric(number))
             .union(numberIsValidLuhn(number))
     }
 
-    public func validate(cvc: CVC) -> CardValidationResult {
+    public func validate(_ cvc: CVC) -> CardValidationResult {
         return .UnknownType
     }
 
-    public func validate(expiry: Expiry) -> CardValidationResult {
+    public func validate(_ expiry: Expiry) -> CardValidationResult {
         return .UnknownType
     }
 

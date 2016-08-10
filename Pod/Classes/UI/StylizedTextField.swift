@@ -44,7 +44,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
      If `borderWidth` has been set, changes to this parameter change the color of the border of `self`.
      */
     @IBInspectable
-    public var borderColor: UIColor = UIColor.black() {
+    public var borderColor: UIColor = UIColor.black {
         didSet {
             self.layer.borderColor = self.borderColor.cgColor
         }
@@ -69,7 +69,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
     /**
      The color in which text flashes, when the user is about to enter an invalid card number.
      */
-    @IBInspectable public var invalidInputColor: UIColor = UIColor.red()
+    @IBInspectable public var invalidInputColor: UIColor = UIColor.red
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -84,7 +84,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
     }
     
     // MARK: - Override functions
-    
+
     override public func becomeFirstResponder() -> Bool {
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
         return super.becomeFirstResponder()

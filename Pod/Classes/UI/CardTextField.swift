@@ -184,14 +184,21 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         }
     }
     #endif
-    
-    public override var attributedPlaceholder: AttributedString? {
+
+    public override var attributedPlaceholder: NSAttributedString? {
         didSet {
             numberInputTextField?.attributedPlaceholder = attributedPlaceholder
             super.attributedPlaceholder = nil
         }
     }
-    
+
+    public override var isFirstResponder: Bool {
+        // Return true if any of `self`'s subviews is the current first responder.
+        return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
+            .filter({$0.isFirstResponder})
+            .isEmpty == false
+    }
+
     /**
      The card type for the entered card number or nil, if no card type has been detected with the given input.
      */
@@ -222,7 +229,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         if #available(iOS 9.0, *) {
             return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
         } else {
-            let isoCode = Locale.autoupdatingCurrent.object(forKey: Locale.Key.languageCode) as? String ?? ""
+            let isoCode = Locale.autoupdatingCurrent.languageCode ?? ""
             return Locale.characterDirection(forLanguage: isoCode) == Locale.LanguageDirection.rightToLeft
         }
     }
@@ -231,7 +238,10 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.localeDidChange), name: Locale.currentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.localeDidChange),
+                                               name: NSLocale.currentLocaleDidChangeNotification,
+                                               object: nil)
         #if !TARGET_INTERFACE_BUILDER
             setupView()
         #endif
@@ -239,14 +249,19 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.localeDidChange), name: Locale.currentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.localeDidChange),
+                                               name: NSLocale.currentLocaleDidChangeNotification,
+                                               object: nil)
         #if !TARGET_INTERFACE_BUILDER
             setupView()
         #endif
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Locale.currentLocaleDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSLocale.currentLocaleDidChangeNotification,
+                                                  object: nil)
     }
     
     /**
@@ -273,9 +288,9 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         firstObjectInNib.frame = bounds
         addSubview(firstObjectInNib)
         
-        cardImageView?.image = cardTypeImageStore.imageFor(cardType: UnknownCardType())
+        cardImageView?.image = cardTypeImageStore.imageFor(UnknownCardType())
         cardImageView?.layer.cornerRadius = 5.0
-        cardImageView?.layer.shadowColor = UIColor.black().cgColor
+        cardImageView?.layer.shadowColor = UIColor.black.cgColor
         cardImageView?.layer.shadowRadius = 2
         cardImageView?.layer.shadowOffset = CGSize(width: 0, height: 0)
         cardImageView?.layer.shadowOpacity = 0.2
@@ -357,7 +372,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             $0?.isSecureTextEntry = isSecureTextEntry
         })
         
-        super.textColor = UIColor.clear()
+        super.textColor = UIColor.clear
         super.placeholder = nil
     }
     
@@ -414,7 +429,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         accessoryButton?.imageView?.contentMode = .scaleAspectFit
         
         if let buttonImage = cardTextFieldDelegate?.cardTextFieldShouldShowAccessoryImage(self) {
-            let scaledImage = buttonImage.resizableImage(withCapInsets: UIEdgeInsetsZero, resizingMode: .stretch)
+            let scaledImage = buttonImage.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
             accessoryButton?.titleLabel?.text = nil
             accessoryButton?.setImage(scaledImage, for: UIControlState())
             accessoryButton?.tintColor = numberInputTextField?.textColor
@@ -507,7 +522,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     internal func showCardImage() {
         let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
-        let cardTypeImage = cardTypeImageStore.imageFor(cardType: cardType)
+        let cardTypeImage = cardTypeImageStore.imageFor(cardType)
 
         cardImageView?.image = cardTypeImage
     }
@@ -517,7 +532,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     internal func showCVCImage() {
         let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
-        let cvcImage = cardTypeImageStore.cvcImageFor(cardType: cardType)
+        let cvcImage = cardTypeImageStore.cvcImageFor(cardType)
         
         cardImageView?.image = cvcImage
         cvcTextField?.cardType = cardType
@@ -529,7 +544,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         super.layoutSubviews()
         
         // If moving to a larger screen size and not showing the detail view, make sure that it is outside the view.
-        if let transform = cardInfoView?.transform where !transform.isIdentity {
+        if let transform = cardInfoView?.transform, !transform.isIdentity {
             translateCardNumberIn()
         }
     }
@@ -538,7 +553,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         // Detect touches in card number text field as long as the detail view is on top of it
         touches.forEach({ touch -> () in
             let point = touch.location(in: numberInputTextField)
-            if (numberInputTextField?.point(inside: point, with: event) ?? false) && [monthTextField,yearTextField,cvcTextField, slashLabel].reduce(true, combine: { (currentValue: Bool, view: UIView?) -> Bool in
+            if (numberInputTextField?.point(inside: point, with: event) ?? false) && [monthTextField,yearTextField,cvcTextField, slashLabel].reduce(true, { (currentValue: Bool, view: UIView?) -> Bool in
                 let pointInView = touch.location(in: view)
                 return currentValue && !(view?.point(inside: pointInView, with: event) ?? false)
             }) {
@@ -588,30 +603,17 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         // Return false if any of this text field's subviews is already first responder. 
         // Otherwise let `numberInputTextField` become the first responder.
         if [numberInputTextField,monthTextField,yearTextField,cvcTextField]
-            .flatMap({return $0.isFirstResponder()})
-            .reduce(true, combine: {$0 && $1}) {
+            .flatMap({return $0.isFirstResponder})
+            .reduce(true, {$0 && $1}) {
             return false
         }
         return numberInputTextField.becomeFirstResponder()
     }
     
-    public override func isFirstResponder() -> Bool {
-        // Return true if any of `self`'s subviews is the current first responder.
-        // Needs to unwrap the IBOutlets otherwise IBInspectable is crashing when using CardTextField because IBOutlets
-        // are not initialized yet when IBInspectable engine runs.
-        guard let numberInputTextField = numberInputTextField, monthTextField = monthTextField, yearTextField = yearTextField, cvcTextField = cvcTextField else {
-            return false
-        }
-
-        return [numberInputTextField, monthTextField, yearTextField, cvcTextField]
-            .filter({$0.isFirstResponder()})
-            .isEmpty == false
-    }
-    
     public override func resignFirstResponder() -> Bool {
         // If any of `self`'s subviews is first responder, resign first responder status.
         return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
-            .filter({$0.isFirstResponder()})
+            .filter({$0.isFirstResponder})
             .first?
             .resignFirstResponder() ?? true
     }

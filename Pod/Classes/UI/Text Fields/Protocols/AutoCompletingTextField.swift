@@ -22,5 +22,5 @@ protocol AutoCompletingTextField {
      
      - returns: Auto-completed string.
      */
-    func autocomplete(text: String) -> String
+    func autocomplete(_ text: String) -> String
 }

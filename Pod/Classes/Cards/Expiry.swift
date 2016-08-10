@@ -8,7 +8,7 @@
 
 import Foundation
 
-private let gregorianCalendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian)!
+private let gregorianCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
 
 /**
  A Credit Card Expiry date.
@@ -43,7 +43,7 @@ public struct Expiry: RawRepresentable {
             return nil
         }
         
-        let regex = try! RegularExpression(pattern: "^(\\d{1,2})[/|-](\\d{1,4})", options: .caseInsensitive)
+        let regex = try! NSRegularExpression(pattern: "^(\\d{1,2})[/|-](\\d{1,4})", options: .caseInsensitive)
         var monthStr: String = ""
         var yearStr: String = ""
         
@@ -51,15 +51,15 @@ public struct Expiry: RawRepresentable {
             return nil
         }
         
-        let monthRange = match.range(at: 1)
-        if monthRange.length > 0, let range = string.rangeFrom(nsRange: monthRange) {
+        let monthRange = match.rangeAt(1)
+        if monthRange.length > 0, let range = string.rangeFrom(monthRange) {
             monthStr = string.substring(with: range)
         } else {
             return nil
         }
         
-        let yearRange = match.range(at: 2)
-        if yearRange.length > 0, let range = string.rangeFrom(nsRange: yearRange) {
+        let yearRange = match.rangeAt(2)
+        if yearRange.length > 0, let range = string.rangeFrom(yearRange) {
             yearStr = string.substring(with: range)
         } else {
             return nil
@@ -77,10 +77,10 @@ public struct Expiry: RawRepresentable {
      - returns:             `nil`, if the expiration date could not be created because of invalid month or year strings.
      */
     public init?(month: String, year: String) {
-        guard let monthVal = UInt(month), yearVal = UInt(year) where year.characters.count >= 2 else {
+        guard let monthVal = UInt(month), let yearVal = UInt(year), year.characters.count >= 2 else {
             return nil
         }
-        
+
         self.init(month: monthVal, year: yearVal)
     }
 
@@ -112,7 +112,7 @@ public struct Expiry: RawRepresentable {
             return nil
         }
 
-        guard let date = toDate(month: month, year: yearValue) else {
+        guard let date = dateWith(month: month, year: yearValue) else {
             return nil
         }
 
@@ -124,7 +124,7 @@ public struct Expiry: RawRepresentable {
     }
 
     private func components() -> DateComponents {
-        return gregorianCalendar.components([.year, .month], from: rawValue)
+        return gregorianCalendar.dateComponents([.year, .month], from: rawValue)
     }
 }
 
@@ -144,18 +144,19 @@ extension Expiry: CustomStringConvertible {
  
  - returns: The date with month and year and time set to one minute before the following month.
  */
-private func toDate(month: UInt, year: UInt) -> Date? {
+private func dateWith(month: UInt, year: UInt) -> Date? {
     var dateComponents = DateComponents()
     dateComponents.day = 1
     dateComponents.month = Int(month)
     dateComponents.year = Int(year)
 
-    if let gregorianCalendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian),
-        let components = gregorianCalendar.date(from: dateComponents) {
-            let monthRange = gregorianCalendar.range(of: Calendar.Unit.day, in: Calendar.Unit.month,
-                for:components)
+    let gregorianCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    if let components = gregorianCalendar.date(from: dateComponents) {
+            let monthRange = gregorianCalendar.range(of: Calendar.Component.day,
+                                                     in: Calendar.Component.month,
+                                                     for:components)
 
-            dateComponents.day = monthRange.length
+            dateComponents.day = monthRange?.count
             dateComponents.hour = 23
             dateComponents.minute = 59
 

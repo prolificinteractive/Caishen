@@ -8,10 +8,12 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Caishen:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Caishen: c0c7050eaaefac2df5196ea2c2451b79978cd617
   CardIO: 92c45caef0d986c4a303a7afba0c9b76ff2b1f6e
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 6ef97acedda52c92ab765cecef83077de5e22385
+
+COCOAPODS: 1.0.1
