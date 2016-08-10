@@ -52,8 +52,8 @@ public class CardTypeRegister {
      
      - parameter cardType: The card type that should be contained in this card type register.
      */
-    public func registerCardType(_ cardType: CardType) {
-        if registeredCardTypes.contains({ $0.isEqual(to: cardType) }) {
+    public func register(cardType: CardType) {
+        if registeredCardTypes.contains(where: { $0.isEqual(to: cardType) }) {
             return
         }
 

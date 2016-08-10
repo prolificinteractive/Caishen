@@ -177,7 +177,7 @@ extension CardType {
      - returns: The number of digits that are contained in a card number of card type `self`.
      */
     public func expectedCardNumberLength() -> Int {
-        return numberGrouping.reduce(0, combine: {$0 + $1})
+        return numberGrouping.reduce(0, {$0 + $1})
     }
 
     /**
@@ -203,7 +203,7 @@ extension CardType {
             if odd {
                 digit = digit * 2
             }
-            if digit > 9 {3
+            if digit > 9 {
                 digit = digit - 9
             }
             sum += digit

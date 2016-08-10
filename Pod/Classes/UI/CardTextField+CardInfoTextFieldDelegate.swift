@@ -14,7 +14,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
         updateNumberColor()
         notifyDelegate()
         if expirationDateIsValid() {
-            select(textField: textField, prefillText: nil)
+            select(textField, prefillText: nil)
         }
     }
     
@@ -25,14 +25,14 @@ extension CardTextField: CardInfoTextFieldDelegate {
     
     public func textField(_ textField: UITextField, didEnterOverflowInfo overFlowDigits: String) {
         updateNumberColor()
-        select(textField: textField, prefillText: overFlowDigits)
+        select(textField, prefillText: overFlowDigits)
     }
 
-    private func select(textField: UITextField, prefillText: String?) {
+    private func select(_ textField: UITextField, prefillText: String?) {
         var nextTextField: UITextField?
         if textField == monthTextField {
             if hideExpiryTextFields {
-                select(textField: yearTextField, prefillText: prefillText)
+                select(yearTextField, prefillText: prefillText)
             } else {
                 nextTextField = yearTextField
             }
@@ -48,7 +48,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
             return
         }
         
-        nextTextField?.delegate?.textField?(nextTextField!, shouldChangeCharactersIn: NSMakeRange(0, (nextTextField?.text ?? "").characters.count), replacementString: prefillText)
+        _ = nextTextField?.delegate?.textField?(nextTextField!, shouldChangeCharactersIn: NSMakeRange(0, (nextTextField?.text ?? "").characters.count), replacementString: prefillText)
     }
     
     /**
@@ -57,7 +57,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
     private func updateNumberColor() {
         // if the expiration date is not valid, set the text color for the date to `invalidNumberColor`
         if !expirationDateIsValid() {
-            let invalidInputColor = self.invalidInputColor ?? UIColor.red()
+            let invalidInputColor = self.invalidInputColor ?? UIColor.red
             // if the expiration date text fields haven't been assigned invalid input color
             if monthTextField?.textColor != invalidInputColor && yearTextField?.textColor != invalidInputColor {
                 monthTextField?.textColor = invalidInputColor
@@ -66,8 +66,8 @@ extension CardTextField: CardInfoTextFieldDelegate {
                 addDateInvalidityObserver()
             }
         } else {
-            monthTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black()
-            yearTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black()
+            monthTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black
+            yearTextField?.textColor = numberInputTextField?.textColor ?? UIColor.black
         }
     }
 

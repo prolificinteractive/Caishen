@@ -19,7 +19,7 @@ extension String {
      
      - returns: `nsRange` converted to Range<String.Index> or nil, if its start and/or end location are not within `self`.
      */
-    func rangeFrom(nsRange: NSRange) -> Range<String.Index>? {
+    func rangeFrom(_ nsRange: NSRange) -> Range<String.Index>? {
         guard let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex) else {
             return nil
         }
@@ -40,7 +40,7 @@ extension String {
      
      - returns: An NSRange object that is equivalent to `range`.
      */
-    func NSRangeFrom(range : Range<String.Index>) -> NSRange {
+    func NSRangeFrom(_ range : Range<String.Index>) -> NSRange {
         let utf16view = self.utf16
         let from = String.UTF16View.Index(range.lowerBound, within: utf16view)
         let to = String.UTF16View.Index(range.upperBound, within: utf16view)
@@ -66,7 +66,7 @@ extension String {
      - returns: True if this string contains only digits.
      */
     func isNumeric() -> Bool {
-        return characters.reduce(true, combine: { (result, value) in
+        return characters.reduce(true, { (result, value) in
             let string = String(value)
             guard let firstChar = string.utf16.first else {
                 return result

@@ -18,18 +18,18 @@ public extension CardTextField {
      - parameter year:       The year that should be shown in the year input field.
      - parameter cvc:        The CVC that should be shown in the CVC input field.
      */
-    public func prefill(number: String?, month: Int?, year: Int?, cvc: String?) {
+    public func prefill(_ number: String?, month: Int?, year: Int?, cvc: String?) {
         if let year = year {
             var trimmedYear = year
             if year > 100 {
                 trimmedYear = year % 100
             }
             
-            yearTextField?.prefill(text: String(format: "%02i", arguments: [trimmedYear]))
+            yearTextField?.prefill(String(format: "%02i", arguments: [trimmedYear]))
         }
         
         if let month = month {
-            monthTextField?.prefill(text: String(format: "%02i", arguments: [month]))
+            monthTextField?.prefill(String(format: "%02i", arguments: [month]))
         }
         
         if let cardNumber = number, let numberInputTextField = numberInputTextField {
@@ -40,7 +40,7 @@ public extension CardTextField {
         }
         
         if let cvc = cvc {
-            cvcTextField?.prefill(text: cvc)
+            cvcTextField?.prefill(cvc)
         }
         
         OperationQueue().addOperation({
