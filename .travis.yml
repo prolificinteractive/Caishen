@@ -24,3 +24,5 @@ env:
     - TVOS_SDK=appletvsimulator10.0
     - WATCHOS_SDK=watchsimulator3.0
     - EXAMPLE_SCHEME="Caishen_Example"
+before_install:
+    - gem install cocoapods --pre --no-rdoc --no-ri --no-document --quiet
