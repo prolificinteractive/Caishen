@@ -33,9 +33,9 @@ public class DetailInputTextField: StylizedTextField {
             return false
         }
         
-        let autoCompletedNewText = autocomplete(text: newText)
+        let autoCompletedNewText = autocomplete(newText)
         
-        let (currentTextFieldText, overflowTextFieldText) = split(text: autoCompletedNewText)
+        let (currentTextFieldText, overflowTextFieldText) = split(autoCompletedNewText)
         
         if isInputValid(currentTextFieldText, partiallyValid: true) {
             textField.text = currentTextFieldText
@@ -53,7 +53,7 @@ public class DetailInputTextField: StylizedTextField {
         return false
     }
     
-    public func prefill(text: String) {
+    public func prefill(_ text: String) {
         if isInputValid(text, partiallyValid: false) {
             cardInfoTextFieldDelegate?.textField(self, didEnterValidInfo: text)
         } else if isInputValid(text, partiallyValid: true) {
@@ -61,7 +61,7 @@ public class DetailInputTextField: StylizedTextField {
         }
     }
     
-    private func split(text: String) -> (currentText: String, overflowText: String) {
+    private func split(_ text: String) -> (currentText: String, overflowText: String) {
         let hasOverflow = text.characters.count > expectedInputLength
         let index = (hasOverflow) ?
             text.characters.index(text.startIndex, offsetBy: expectedInputLength) :
@@ -72,7 +72,7 @@ public class DetailInputTextField: StylizedTextField {
 
 extension DetailInputTextField: AutoCompletingTextField {
 
-    func autocomplete(text: String) -> String {
+    func autocomplete(_ text: String) -> String {
         return text
     }
 }

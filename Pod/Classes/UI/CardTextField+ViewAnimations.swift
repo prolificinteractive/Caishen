@@ -45,7 +45,7 @@ public extension CardTextField {
         // which in turn will cause the number field to move to full display. This can cause animation issues.
         // In order to tackle these animation issues, check if the cardInfoView was previously fully displayed (and should therefor not be moved with an animation).
         var shouldMoveAnimated: Bool = true
-        if let transform = cardInfoView?.transform where transform.isIdentity {
+        if let transform = cardInfoView?.transform, transform.isIdentity {
             shouldMoveAnimated = false
         }
         UIView.performWithoutAnimation { [weak self] _ in
@@ -100,17 +100,17 @@ public extension CardTextField {
         // If card info view is moved with an animation, wait for it to finish before
         // showing the full card number to avoid overlapping on RTL language.
         if cardInfoView?.layer.animationKeys() != nil {
-            DispatchQueue.main.after(when: DispatchTime.now() + Double(Int64(viewAnimationDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { [weak self] _ in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(viewAnimationDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { [weak self] _ in
                 self?.numberInputTextField?.layer.mask = nil
-            }
-            
+            })
+
             // Let the number text field become first responder only after the animation has completed (left to right script)
             // or half way through the view animation (right to left script)
             let firstResponderDelay = isRightToLeftLanguage ? viewAnimationDuration / 2.0 : viewAnimationDuration
-            DispatchQueue.main.after(when: DispatchTime.now() + Double(Int64(firstResponderDelay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(firstResponderDelay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
                             infoTextFields.forEach({$0?.resignFirstResponder()})
                             self.numberInputTextField.becomeFirstResponder()
-            }
+            })
         } else {
             numberInputTextField?.layer.mask = nil
             infoTextFields.forEach({$0?.resignFirstResponder()})
