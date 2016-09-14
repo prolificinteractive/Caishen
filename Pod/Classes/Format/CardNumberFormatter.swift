@@ -81,12 +81,10 @@ public final class CardNumberFormatter {
         guard let selectedRange = textField.selectedTextRange else {
             return nil
         }
+
         let addedCharacters = text.characters.count - (textField.text ?? "").characters.count
-        
         let position = textField.offset(from: textField.beginningOfDocument, to: selectedRange.start) + addedCharacters
-        
-        let formattedString = text 
-        let components = formattedString.components(separatedBy: self.separator)
+        let components = text.components(separatedBy: self.separator)
         
         // Find the component that contains the cursor
         var componentContainingCursor = 0

@@ -393,7 +393,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     private func setupAccessibilityLabelFor(textField: UITextField) {
         textField.accessibilityLabel = Localization.accessibilityLabelForTextField(textField,
-                                                                                   comment: "Accessibility label for \(String(textField))")
+                                                                                   comment: "Accessibility label for \(String(describing: textField))")
     }
     
     /**
@@ -574,7 +574,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     public override func accessibilityElementCount() -> Int {
         return 5
     }
-    
+
     /**
      Returns the accessibility element at the specified index
      
@@ -582,7 +582,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      
      - returns: The accessibility element at the specified index, or nil if none exists
      */
-    public override func accessibilityElement(at index: Int) -> AnyObject? {
+    public override func accessibilityElement(at index: Int) -> Any? {
         switch index {
         case 0:
             return numberInputTextField

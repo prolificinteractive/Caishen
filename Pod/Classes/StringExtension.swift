@@ -71,7 +71,7 @@ extension String {
             guard let firstChar = string.utf16.first else {
                 return result
             }
-            return result && CharacterSet.decimalDigits.contains(UnicodeScalar(firstChar))}
+            return result && CharacterSet.decimalDigits.contains(UnicodeScalar(firstChar)!)}
         )
     }
 }
