@@ -85,6 +85,7 @@ public class StylizedTextField: UITextField, UITextFieldDelegate {
     
     // MARK: - Override functions
 
+    @discardableResult
     override public func becomeFirstResponder() -> Bool {
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self)
         return super.becomeFirstResponder()

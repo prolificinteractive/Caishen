@@ -48,7 +48,7 @@ public class MonthInputTextField: DetailInputTextField {
             return text
         }
 
-        let monthNumber = Int(text)
+        let monthNumber = Int(text) ?? 0
         if monthNumber > 1 {
             return "0" + text
         }

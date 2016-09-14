@@ -31,7 +31,7 @@ public class CardTypeRegister {
      
      - parameter registeredCardTypes: Any sequence of `CardType` that should be accepted by `self`.
      */
-    public convenience init<T: Sequence where T.Iterator.Element == CardType>(registeredCardTypes: T) {
+    public convenience init<T: Sequence>(registeredCardTypes: T) where T.Iterator.Element == CardType {
         self.init()
         setRegisteredCardTypes(registeredCardTypes)
     }
@@ -74,7 +74,7 @@ public class CardTypeRegister {
      
      - parameter cardTypes: The new range of card types contained in this card type register.
      */
-    public func setRegisteredCardTypes<T: Sequence where T.Iterator.Element == CardType>(_ cardTypes: T) {
+    public func setRegisteredCardTypes<T: Sequence>(_ cardTypes: T) where T.Iterator.Element == CardType {
         registeredCardTypes = [CardType]()
         registeredCardTypes.append(contentsOf: cardTypes)
     }
