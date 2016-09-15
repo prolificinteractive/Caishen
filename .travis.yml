@@ -13,16 +13,5 @@ script:
 - set -o pipefail && xcodebuild test -project Caishen.xcodeproj -scheme CaishenTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.0' | xcpretty
 - pod lib lint
 
-env:
-    global:
-    - LC_CTYPE=en_US.UTF-8
-    - LANG=en_US.UTF-8
-    - WORKSPACE=Caishen.xcworkspace
-    - IOS_FRAMEWORK_SCHEME="Caishen"
-    - IOS_SDK=iphonesimulator10.0
-    - OSX_SDK=macosx10.12
-    - TVOS_SDK=appletvsimulator10.0
-    - WATCHOS_SDK=watchsimulator3.0
-    - EXAMPLE_SCHEME="Caishen_Example"
 before_install:
     - gem install cocoapods --pre --no-rdoc --no-ri --no-document --quiet
