@@ -30,4 +30,8 @@ public struct UnknownCardType: CardType {
         return .UnknownType
     }
 
+    public init() {
+        
+    }
+
 }
