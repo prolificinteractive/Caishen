@@ -171,9 +171,10 @@ public class NumberInputTextField: StylizedTextField {
         let numberPartiallyValid = type.checkCardNumberPartiallyValid(cardNumber) == .Valid
         
         if numberPartiallyValid {
-            let formatter = cardNumberFormatter
-            text = formatter.formattedCardNumber(unformattedCardNumber)
-            numberInputTextFieldDelegate?.numberInputTextFieldDidChangeText(self)
+            // Set text and apply text color changes if the prefilled card type is unknown
+            textField(self,
+                      shouldChangeCharactersInRange: NSRange(location: 0, length: text?.characters.count ?? 0),
+                      replacementString: cardNumber.rawValue)
         }
     }
     
