@@ -242,7 +242,6 @@
 		2FDD15431CC7B1AC0086CEAC /* Format */ = {
 			isa = PBXGroup;
 			children = (
-				2FDD154B1CC7B1AC0086CEAC /* CardTextField.swift */,
 				2FDD15441CC7B1AC0086CEAC /* CardNumberFormatter.swift */,
 			);
 			path = Format;
@@ -255,6 +254,7 @@
 				2FDD15481CC7B1AC0086CEAC /* CardTextField+InterfaceBuilder.swift */,
 				2FDD15491CC7B1AC0086CEAC /* CardTextField+PrefillInformation.swift */,
 				2FDD154A1CC7B1AC0086CEAC /* CardTextField+ViewAnimations.swift */,
+				2FDD154B1CC7B1AC0086CEAC /* CardTextField.swift */,
 				2FDD154C1CC7B1AC0086CEAC /* CardTextFieldDelegate.swift */,
 				2FDD154D1CC7B1AC0086CEAC /* CardTypeImageStore.swift */,
 				2FDD154E1CC7B1AC0086CEAC /* CardView.xib */,
