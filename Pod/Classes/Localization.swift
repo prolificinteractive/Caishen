@@ -28,7 +28,7 @@ internal enum Localization: String {
      
      - returns: The accessibility label for the provided text field.
      */
-    static func accessibilityLabelForTextField(_ textField: UITextField, comment: String? = nil) -> String? {
+    static func accessibilityLabel(for textField: UITextField, with comment: String? = nil) -> String? {
         switch textField {
         case is NumberInputTextField:
             return Localization.NumberInputTextFieldAccessibilityLabel.localizedStringWithComment(comment)

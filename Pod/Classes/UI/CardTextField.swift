@@ -207,7 +207,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
             return nil
         }
         
-        return cardTypeRegister.cardTypeFor(number: number)
+        return cardTypeRegister.cardType(for: number)
     }
     
     internal var hideExpiryTextFields: Bool = false {
@@ -288,7 +288,7 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
         firstObjectInNib.frame = bounds
         addSubview(firstObjectInNib)
         
-        cardImageView?.image = cardTypeImageStore.imageFor(UnknownCardType())
+        cardImageView?.image = cardTypeImageStore.image(for: UnknownCardType())
         cardImageView?.layer.cornerRadius = 5.0
         cardImageView?.layer.shadowColor = UIColor.black.cgColor
         cardImageView?.layer.shadowRadius = 2
@@ -380,20 +380,20 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Adds voice over accessibility support for all text fields
      */
     private func setupAccessibilityLabels() {
-        setupAccessibilityLabelFor(textField: numberInputTextField)
-        setupAccessibilityLabelFor(textField: cvcTextField)
-        setupAccessibilityLabelFor(textField: monthTextField)
-        setupAccessibilityLabelFor(textField: yearTextField)
+        setupAccessibilityLabel(for: numberInputTextField)
+        setupAccessibilityLabel(for: cvcTextField)
+        setupAccessibilityLabel(for: monthTextField)
+        setupAccessibilityLabel(for: yearTextField)
     }
-    
+
     /**
      Adds voice over accessibility support for a particular text fields
      
      - parameter textField: a text field that needs support for voice over accessibility
      */
-    private func setupAccessibilityLabelFor(textField: UITextField) {
-        textField.accessibilityLabel = Localization.accessibilityLabelForTextField(textField,
-                                                                                   comment: "Accessibility label for \(String(describing: textField))")
+    private func setupAccessibilityLabel(for textField: UITextField) {
+        textField.accessibilityLabel = Localization.accessibilityLabel(for: textField,
+                                                                       with: "Accessibility label for \(String(describing: textField))")
     }
     
     /**
@@ -496,16 +496,16 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     @objc public func numberInputTextFieldDidChangeText(_ numberInputTextField: NumberInputTextField) {
         showCardImage()
         notifyDelegate()
-        hideExpiryTextFields = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresExpiry
-        hideCVCTextField = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresCVC
+        hideExpiryTextFields = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresExpiry
+        hideCVCTextField = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresCVC
     }
     
     public func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField) {
         moveCardNumberOutAnimated()
         
         notifyDelegate()
-        hideExpiryTextFields = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresExpiry
-        hideCVCTextField = !cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber).requiresCVC
+        hideExpiryTextFields = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresExpiry
+        hideCVCTextField = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresCVC
         if hideExpiryTextFields && hideCVCTextField {
             return
         } else if hideExpiryTextFields {
@@ -521,8 +521,8 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Displays the card image for the currently detected card type in the card text field's `cardImageView`.
      */
     internal func showCardImage() {
-        let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
-        let cardTypeImage = cardTypeImageStore.imageFor(cardType)
+        let cardType = cardTypeRegister.cardType(for: numberInputTextField.cardNumber)
+        let cardTypeImage = cardTypeImageStore.image(for: cardType)
 
         cardImageView?.image = cardTypeImage
     }
@@ -531,8 +531,8 @@ public class CardTextField: UITextField, NumberInputTextFieldDelegate {
      Displays the CVC image for the currently detected card type in the card text field's `cardImageView`.
      */
     internal func showCVCImage() {
-        let cardType = cardTypeRegister.cardTypeFor(number: numberInputTextField.cardNumber)
-        let cvcImage = cardTypeImageStore.cvcImageFor(cardType)
+        let cardType = cardTypeRegister.cardType(for: numberInputTextField.cardNumber)
+        let cvcImage = cardTypeImageStore.cvcImage(for: cardType)
         
         cardImageView?.image = cvcImage
         cvcTextField?.cardType = cardType

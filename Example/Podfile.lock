@@ -8,7 +8,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Caishen:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Caishen: 1d194378fcb51800e4d3d78cf83ce1c7d72d1e79
@@ -16,4 +16,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bb32f4b56361a21aabd1988688db99cadef51bab
 
-COCOAPODS: 1.1.0.rc.3
+COCOAPODS: 1.1.1

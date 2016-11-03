@@ -22,7 +22,7 @@ public class NumberInputTextField: StylizedTextField {
      - note: This card number may be incomplete and invalid while the user is entering a card number. Be sure to validate it against a proper card type before assuming it is valid.
      */
     public var cardNumber: Number {
-        let textFieldTextUnformatted = cardNumberFormatter.unformattedCardNumber(text ?? "")
+        let textFieldTextUnformatted = cardNumberFormatter.unformat(cardNumber: text ?? "")
         return Number(rawValue: textFieldTextUnformatted)
     }
     
@@ -45,7 +45,7 @@ public class NumberInputTextField: StylizedTextField {
                 return
             }
             
-            let isUnformatted = (placeholder == self.cardNumberFormatter.unformattedCardNumber(placeholder))
+            let isUnformatted = (placeholder == self.cardNumberFormatter.unformat(cardNumber: placeholder))
             let isCreditString = (placeholder.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789\(self.cardNumberFormatter.separator)").inverted) == nil)
             
             // If this is a Credit Card placeholder and wasn't already formatted, format it
@@ -76,7 +76,7 @@ public class NumberInputTextField: StylizedTextField {
                 + ". "
                 + Localization.CardType.localizedStringWithComment("Description for detected card type.")
                 + ": "
-                + cardTypeRegister.cardTypeFor(number: cardNumber).name
+                + cardTypeRegister.cardType(for: cardNumber).name
         }
         
         set {  }
@@ -114,7 +114,7 @@ public class NumberInputTextField: StylizedTextField {
         let textFieldTextFormatted = NSString(string: textField.text ?? "")
         // Text in text field after applying changes, formatted and unformatted:
         let newTextFormatted = textFieldTextFormatted.replacingCharacters(in: range, with: string)
-        let newTextUnformatted = cardNumberFormatter.unformattedCardNumber(newTextFormatted)
+        let newTextUnformatted = cardNumberFormatter.unformat(cardNumber: newTextFormatted)
         
         // Set the text color to invalid - this will be changed to `validTextColor` later in this method if the input was valid
         super.textColor = invalidInputColor
@@ -124,12 +124,12 @@ public class NumberInputTextField: StylizedTextField {
         }
 
         let parsedCardNumber = Number(rawValue: newTextUnformatted)
-        let oldValidation = cardTypeRegister.cardTypeFor(number: cardNumber).validate(number: cardNumber)
+        let oldValidation = cardTypeRegister.cardType(for: cardNumber).validate(number: cardNumber)
         let newValidation =
-            cardTypeRegister.cardTypeFor(number: parsedCardNumber).validate(number: parsedCardNumber)
+            cardTypeRegister.cardType(for: parsedCardNumber).validate(number: parsedCardNumber)
 
         if !newValidation.contains(.NumberTooLong) {
-            cardNumberFormatter.replaceRangeFormatted(range, inTextField: textField, withString: string)
+            cardNumberFormatter.format(range: range, inTextField: textField, andReplaceWith: string)
             numberInputTextFieldDelegate?.numberInputTextFieldDidChangeText(self)
         } else if oldValidation == .Valid {
             // If the card number is already valid, should call numberInputTextFieldDidComplete on delegate
@@ -142,7 +142,7 @@ public class NumberInputTextField: StylizedTextField {
         }
 
         let newLengthComplete =
-            parsedCardNumber.length == cardTypeRegister.cardTypeFor(number: parsedCardNumber).maxLength
+            parsedCardNumber.length == cardTypeRegister.cardType(for: parsedCardNumber).maxLength
 
         if newLengthComplete && newValidation != .Valid {
             addNumberInvalidityObserver()
@@ -164,10 +164,10 @@ public class NumberInputTextField: StylizedTextField {
      
      - parameter cardNumber: The card number which should be displayed in `self`.
      */
-    public func prefill(text: String) {
+    public func prefill(_ text: String) {
         let unformattedCardNumber = String(text.characters.filter({$0.isNumeric()}))
         let cardNumber = Number(rawValue: unformattedCardNumber)
-        let type = cardTypeRegister.cardTypeFor(number: cardNumber)
+        let type = cardTypeRegister.cardType(for: cardNumber)
         let numberPartiallyValid = type.checkCardNumberPartiallyValid(cardNumber) == .Valid
         
         if numberPartiallyValid {

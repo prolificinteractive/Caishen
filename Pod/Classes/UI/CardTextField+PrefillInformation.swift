@@ -33,7 +33,7 @@ public extension CardTextField {
         }
         
         if let cardNumber = number, let numberInputTextField = numberInputTextField {
-            numberInputTextField.prefill(text: cardNumber)
+            numberInputTextField.prefill(cardNumber)
             
             // With a new card number comes a new card type - pass this card type to `cvcTextField`
             cvcTextField?.cardType = cardType
