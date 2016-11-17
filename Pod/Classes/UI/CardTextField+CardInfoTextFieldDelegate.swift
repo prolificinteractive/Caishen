@@ -89,20 +89,20 @@ extension CardTextField: CardInfoTextFieldDelegate {
     }
 
     // MARK: Accessibility
-    
+
     /**
      Add an observer to listen to the event of UIAccessibilityAnnouncementDidFinishNotification, and then post an accessibility
      notification to user that the entered expiration date has already expired.
-     
+
      The reason why can't we just post an accessbility notification is that only the last accessibility notification would be read to users.
-     As each time users input something there will be an accessibility notification from the system which will always replace what we have 
+     As each time users input something there will be an accessibility notification from the system which will always replace what we have
      posted here. Thus we need to listen to the notification from the system first, wait until it is finished, and post ours afterwards.
      */
     private func addDateInvalidityObserver() {
         NotificationCenter.default.addObserver(self,
-                                                         selector: #selector(notifyExpiryInvalidity),
-                                                         name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
-                                                         object: nil)
+                                               selector: #selector(notifyExpiryInvalidity),
+                                               name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
+                                               object: nil)
     }
 
     /**

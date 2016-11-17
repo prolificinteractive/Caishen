@@ -65,7 +65,7 @@ public class CardTypeRegister {
      
      - parameter cardType: The card type that should be removed from this card type register.
      */
-    public func unregisterCardType(_ cardType: CardType) {
+    public func unregister(cardType: CardType) {
         registeredCardTypes = registeredCardTypes.filter { !$0.isEqual(to: cardType) }
     }
     
@@ -84,11 +84,11 @@ public class CardTypeRegister {
      
      - important: When creating custom card types, you should make sure, that there are no conflicts in the Issuer Identification Numbers you provide. For example, using [309] to detect a Diners Club card and using [3096] to detect a JCB card will not cause issues as IINs are parsed with the highest numbers first, i.e. the numbers that provide the most context possible, which will return a JCB card in this case. However, no two card types should provide the exact same number (like [309] to detect both a Diners Club card and a JCB card)!
      
-     - parameter cardNumber: The card number whose CardType should be determined
+     - parameter number: The card number whose CardType should be determined
      
      - returns: An instance of UnknownCardType, if no card type matches the Issuer Identification Number of the provided card number or any other card type that matches the card number.
      */
-    public func cardTypeFor(number: Number) -> CardType {
+    public func cardType(for number: Number) -> CardType {
         for i in (0...min(number.length, 6)).reversed() {
             if let substring = number.rawValue[0,i], let substringAsNumber = Int(substring) {
                 if let firstMatchingCardType = registeredCardTypes.filter({

@@ -36,10 +36,10 @@ public final class CardNumberFormatter {
      
      - returns: The unformatted card number string representation.
      */
-    public func unformattedCardNumber(_ cardNumberString: String) -> String {
-        return cardNumberString.replacingOccurrences(of: self.separator, with: "")
+    public func unformat(cardNumber: String) -> String {
+        return cardNumber.replacingOccurrences(of: self.separator, with: "")
     }
-    
+
     /**
      Formats the given card number string based on the detected card type.
      
@@ -49,8 +49,8 @@ public final class CardNumberFormatter {
      */
     public func format(cardNumber: String) -> String {
         let regex: NSRegularExpression
-        
-        let cardType = cardTypeRegister.cardTypeFor(number: Number(rawValue: cardNumber))
+
+        let cardType = cardTypeRegister.cardType(for: Number(rawValue: cardNumber))
         do {
             let groups = cardType.numberGrouping
             var pattern = ""
@@ -67,7 +67,7 @@ public final class CardNumberFormatter {
             fatalError("Error when creating regular expression: \(error)")
         }
         
-        return NSArray(array: self.splitString(cardNumber, withRegex: regex)).componentsJoined(by: self.separator)
+        return NSArray(array: split(string: cardNumber, with: regex)).componentsJoined(by: self.separator)
     }
     
     /**
@@ -162,10 +162,10 @@ public final class CardNumberFormatter {
      - parameter textField: The text field whose text should be changed.
      - parameter string:    The new string. This might be unformatted or badly formatted and will be formatted properly before being inserted into `textField`.
      */
-    public func replaceRangeFormatted(_ range: NSRange, inTextField textField: UITextField, withString string: String) {
-        let newValueUnformatted = self.unformattedCardNumber(NSString(string: textField.text ?? "").replacingCharacters(in: range, with: string))
-        let oldValueUnformatted = self.unformattedCardNumber(textField.text ?? "")
-        
+    public func format(range: NSRange, inTextField textField: UITextField, andReplaceWith string: String) {
+        let newValueUnformatted = unformat(cardNumber: NSString(string: textField.text ?? "").replacingCharacters(in: range, with: string))
+        let oldValueUnformatted = unformat(cardNumber: textField.text ?? "")
+
         let newValue = format(cardNumber: newValueUnformatted)
         let oldValue = textField.text ?? ""
         
@@ -193,7 +193,7 @@ public final class CardNumberFormatter {
      
      - returns: An array of all matches found in string for `regex`.
      */
-    private func splitString(_ string: String, withRegex regex: NSRegularExpression) -> [String] {
+    private func split(string: String, with regex: NSRegularExpression) -> [String] {
         let matches = regex.matches(in: string, options: NSRegularExpression.MatchingOptions(), range: NSMakeRange(0, string.characters.count))
         var result = [String]()
         
