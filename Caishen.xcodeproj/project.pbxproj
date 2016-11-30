@@ -54,6 +54,7 @@
 		2FDD158B1CC7B30C0086CEAC /* CardExpiryValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDD158A1CC7B30C0086CEAC /* CardExpiryValidatorTests.swift */; };
 		2FDD158D1CC7B3200086CEAC /* CardNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDD158C1CC7B3200086CEAC /* CardNumberValidatorTests.swift */; };
 		2FDD158F1CC7B32D0086CEAC /* CardNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDD158E1CC7B32D0086CEAC /* CardNumberFormatterTests.swift */; };
+		9F06A90F1D5910C20063DEBA /* Franchise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06A90E1D5910C20063DEBA /* Franchise.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		2FDD158A1CC7B30C0086CEAC /* CardExpiryValidatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardExpiryValidatorTests.swift; sourceTree = "<group>"; };
 		2FDD158C1CC7B3200086CEAC /* CardNumberValidatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardNumberValidatorTests.swift; sourceTree = "<group>"; };
 		2FDD158E1CC7B32D0086CEAC /* CardNumberFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardNumberFormatterTests.swift; sourceTree = "<group>"; };
+		9F06A90E1D5910C20063DEBA /* Franchise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Franchise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +222,7 @@
 				2FDD15381CC7B1AC0086CEAC /* Default Card Types */,
 				2FDD15411CC7B1AC0086CEAC /* Expiry.swift */,
 				2FDD15421CC7B1AC0086CEAC /* Number.swift */,
+				9F06A90E1D5910C20063DEBA /* Franchise.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				2FDD156D1CC7B1AC0086CEAC /* Visa.swift in Sources */,
 				2FDD157F1CC7B1AC0086CEAC /* DetailInputTextField.swift in Sources */,
 				2FDD15671CC7B1AC0086CEAC /* ChinaUnionPay.swift in Sources */,
+				9F06A90F1D5910C20063DEBA /* Franchise.swift in Sources */,
 				2FDD15771CC7B1AC0086CEAC /* CardTextFieldDelegate.swift in Sources */,
 				2FDD15651CC7B1AC0086CEAC /* CVC.swift in Sources */,
 				2FDD15751CC7B1AC0086CEAC /* CardTextField+ViewAnimations.swift in Sources */,

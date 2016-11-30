@@ -12,6 +12,9 @@ import Foundation
  A card represents a physical bank card with all its associated attributes.
 */
 public struct Card {
+    
+    // The card franchise name.
+    public let franchise: Franchise
 
     /// The card number that is shown on the user's card.
     public let bankCardNumber: Number
@@ -40,13 +43,13 @@ public struct Card {
      
      - returns: A card with the provided parameters.
      */
-    public static func create(number: String, cardVerificationCode cvc: String, expiry: String) throws -> Card {
+    public static func create(number: String, cardVerificationCode cvc: String, expiry: String, franchise: Franchise) throws -> Card {
         // Create card number, cvc and expiry with the arguments provided
         let cardNumber = Number(rawValue: number)
         let cardCVC = CVC(rawValue: cvc)
         let cardExpiry = Expiry(string: expiry) ?? Expiry.invalid
 
-        return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry)
+        return Card(bankCardNumber: cardNumber, cardVerificationCode: cardCVC, expiryDate: cardExpiry, franchise: franchise)
     }
 
     /**
@@ -56,10 +59,11 @@ public struct Card {
      - parameter cardVerificationCode: The card verification code as indicated on the user's payment card.
      - parameter expiryDate: The expiration date as indicated on the user's payment card
     */
-    public init(bankCardNumber: Number, cardVerificationCode: CVC, expiryDate: Expiry) {
+    public init(bankCardNumber: Number, cardVerificationCode: CVC, expiryDate: Expiry, franchise: Franchise) {
         self.bankCardNumber = bankCardNumber
         self.cardVerificationCode = cardVerificationCode
         self.expiryDate = expiryDate
+        self.franchise = franchise
     }
 
 }
