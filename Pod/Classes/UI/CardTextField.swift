@@ -22,7 +22,6 @@ import UIKit
  
  In order to create a custom CardTextField, you can create a subclass which overrides `getNibName()` and `getNibBundle()` in order to load a nib from a specific bundle, which follows this structure
  */
-@IBDesignable
 public class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     // MARK: - Public variables
