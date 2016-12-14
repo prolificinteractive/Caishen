@@ -55,8 +55,10 @@ public class DetailInputTextField: StylizedTextField {
     
     public func prefill(_ text: String) {
         if isInputValid(text, partiallyValid: false) {
+            self.text = text
             cardInfoTextFieldDelegate?.textField(self, didEnterValidInfo: text)
         } else if isInputValid(text, partiallyValid: true) {
+            self.text = text
             cardInfoTextFieldDelegate?.textField(self, didEnterPartiallyValidInfo: text)
         }
     }
