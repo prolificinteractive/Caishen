@@ -105,10 +105,6 @@ open class StylizedTextField: UITextField, UITextFieldDelegate {
         }
     }
     
-    open override func drawPlaceholder(in rect: CGRect) {
-        
-    }
-    
     open func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
