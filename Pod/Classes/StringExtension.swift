@@ -41,10 +41,7 @@ extension String {
      - returns: An NSRange object that is equivalent to `range`.
      */
     func NSRangeFrom(_ range : Range<String.Index>) -> NSRange {
-        let utf16view = self.utf16
-        let from = String.UTF16View.Index(range.lowerBound, within: utf16view)
-        let to = String.UTF16View.Index(range.upperBound, within: utf16view)
-        return NSMakeRange(utf16view.startIndex.distance(to: from), from.distance(to: to))
+        return NSRange(range, in: self)
     }
     
     /**
@@ -59,7 +56,17 @@ extension String {
         if characters.count < toExclusively || fromInclusively >= toExclusively {
             return nil
         }
-        return self.substring(with: (self.characters.index(self.startIndex, offsetBy: fromInclusively)..<self.characters.index(self.startIndex, offsetBy: toExclusively)))
+/**
+         let hasOverflow = text.characters.count > expectedInputLength
+         let index = (hasOverflow) ?
+         text.characters.index(text.startIndex, offsetBy: expectedInputLength) :
+         text.characters.index(text.startIndex, offsetBy: text.characters.count)
+         let first = String(text[..<index])
+         let second = String(text.suffix(from: index))
+         return (first, second)
+ */
+        let index = self.characters.index(self.startIndex, offsetBy: fromInclusively)..<self.characters.index(self.startIndex, offsetBy: toExclusively)
+        return String(self[index])
     }
     
     /**

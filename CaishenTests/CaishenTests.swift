@@ -10,27 +10,14 @@ import XCTest
 @testable import Caishen
 
 class CaishenTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    func testStringSplitting() {
+        let someString = "1234"
+        let length2 = DetailInputTextField.split(someString, expectedInputLength: 2)
+        XCTAssert(length2.currentText == "12")
+        XCTAssert(length2.overflowText == "34")
+        let length3 = DetailInputTextField.split(someString, expectedInputLength: 3)
+        XCTAssert(length3.currentText == "123")
+        XCTAssert(length3.overflowText == "4")
     }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }

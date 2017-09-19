@@ -63,18 +63,25 @@ open class DetailInputTextField: StylizedTextField {
         }
     }
     
+    
     private func split(_ text: String) -> (currentText: String, overflowText: String) {
+        return type(of: self).split(text, expectedInputLength: expectedInputLength)
+    }
+    
+    static func split(_ text: String, expectedInputLength: Int) -> (currentText: String, overflowText: String) {
         let hasOverflow = text.characters.count > expectedInputLength
         let index = (hasOverflow) ?
             text.characters.index(text.startIndex, offsetBy: expectedInputLength) :
             text.characters.index(text.startIndex, offsetBy: text.characters.count)
-        return (text.substring(to: index), text.substring(from: index))
+        let first = String(text[..<index])
+        let second = String(text.suffix(from: index))
+        return (first, second)
     }
 }
 
 extension DetailInputTextField: AutoCompletingTextField {
 
-    func autocomplete(_ text: String) -> String {
+    @objc func autocomplete(_ text: String) -> String {
         return text
     }
 }
@@ -83,11 +90,11 @@ extension DetailInputTextField: TextFieldValidation {
     /**
      Default number of expected digits for MonthInputTextField and YearInputTextField
      */
-    var expectedInputLength: Int {
+    @objc var expectedInputLength: Int {
         return 2
     }
 
-    func isInputValid(_ input: String, partiallyValid: Bool) -> Bool {
+    @objc func isInputValid(_ input: String, partiallyValid: Bool) -> Bool {
         return true
     }
 }

@@ -14,17 +14,17 @@ extension CardTextField {
     /**
      Moves the card number input field to the left outside of the screen with an animation of the duration `viewAnimationDuration`, so that only the last group of the card number is visible. At the same time, the card detail (expiration month and year and CVC) slide in from the right.
      */
-    open func moveCardNumberOutAnimated() {
-        UIView.animate(withDuration: viewAnimationDuration, animations: { [weak self] _ in
-            self?.moveCardNumberOut()
-            })
+    @objc open func moveCardNumberOutAnimated() {
+        UIView.animate(withDuration: 1, animations: {
+            [weak self] in self?.moveCardNumberOut()
+        }, completion: nil)
     }
     
     /**
      Moves the full card number input field to inside the screen with an animation of the duration `viewAnimationDuration`. At the same time, the card detail (expiration month and year and CVC) slide outside the view.
      */
-    open func moveCardNumberInAnimated() {
-        UIView.animate(withDuration: viewAnimationDuration, animations: { [weak self] _ in
+    @objc open func moveCardNumberInAnimated() {
+        UIView.animate(withDuration: viewAnimationDuration, animations: { [weak self] in
             self?.moveCardNumberIn()
             })
     }
@@ -48,7 +48,7 @@ extension CardTextField {
         if let transform = cardInfoView?.transform, transform.isIdentity {
             shouldMoveAnimated = false
         }
-        UIView.performWithoutAnimation { [weak self] _ in
+        UIView.performWithoutAnimation { [weak self] in
             self?.numberInputTextField?.becomeFirstResponder()
         }
         // Get the rect for the last group of digits
@@ -66,7 +66,7 @@ extension CardTextField {
                     numberInputTextField?.transform =
                         CGAffineTransform(translationX: -rect.origin.x, y: 0)
                 } else {
-                    UIView.performWithoutAnimation { [weak self] _ in
+                    UIView.performWithoutAnimation { [weak self] in
                         self?.numberInputTextField?.transform =
                             CGAffineTransform(translationX: -rect.origin.x, y: 0)
                     }
@@ -76,13 +76,13 @@ extension CardTextField {
             numberInputTextField?.alpha = 0
         }
         // Reset the first responder status as it was before.
-        UIView.performWithoutAnimation { [weak self] _ in
+        UIView.performWithoutAnimation { [weak self] in
             self?.numberInputTextField?.resignFirstResponder()
         }
         if shouldMoveAnimated {
             cardInfoView?.transform = CGAffineTransform.identity
         } else {
-            UIView.performWithoutAnimation { [weak self] _ in
+            UIView.performWithoutAnimation { [weak self] in
                 self?.cardInfoView?.transform = CGAffineTransform.identity
             }
         }
@@ -100,7 +100,7 @@ extension CardTextField {
         // If card info view is moved with an animation, wait for it to finish before
         // showing the full card number to avoid overlapping on RTL language.
         if cardInfoView?.layer.animationKeys() != nil {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(viewAnimationDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { [weak self] _ in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(viewAnimationDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { [weak self] in
                 self?.numberInputTextField?.layer.mask = nil
             })
 
