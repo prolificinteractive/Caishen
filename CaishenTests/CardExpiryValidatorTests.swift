@@ -54,7 +54,8 @@ class CardExpiryValidatorTests: XCTestCase {
         
         for i in 0..<shouldBeNil.count {
             let obj = shouldBeNil[i]
-            XCTAssertNil(obj, "Object \(i) should be nil, but is \(obj?.description)")
+            let description = obj?.description ?? "empty"
+            XCTAssertNil(obj, "Object \(i) should be nil, but is `\(description)`")
         }
         
         for i in 0..<shouldNotBeNil.count {

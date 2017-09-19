@@ -266,7 +266,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      Updates the view after the locale did change to potentially switch between left to right and right to left reading style.
      */
-    internal func localeDidChange() {
+    @objc internal func localeDidChange() {
         setupView()
     }
     
@@ -411,7 +411,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      Function that is called when the user tapped on the optionally provided accessory button and performs its designated action.
      */
-    internal func buttonReceivedAction() {
+    @objc internal func buttonReceivedAction() {
         cardTextFieldDelegate?.cardTextFieldShouldProvideAccessoryAction(self)?()
     }
     
@@ -519,7 +519,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      Displays the card image for the currently detected card type in the card text field's `cardImageView`.
      */
-    internal func showCardImage() {
+    @objc internal func showCardImage() {
         let cardType = cardTypeRegister.cardType(for: numberInputTextField.cardNumber)
         let cardTypeImage = cardTypeImageStore.image(for: cardType)
 
@@ -529,7 +529,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
     /**
      Displays the CVC image for the currently detected card type in the card text field's `cardImageView`.
      */
-    internal func showCVCImage() {
+    @objc internal func showCVCImage() {
         let cardType = cardTypeRegister.cardType(for: numberInputTextField.cardNumber)
         let cvcImage = cardTypeImageStore.cvcImage(for: cardType)
         

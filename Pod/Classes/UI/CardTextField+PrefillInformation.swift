@@ -45,7 +45,7 @@ extension CardTextField {
         
         OperationQueue().addOperation({
             Thread.sleep(forTimeInterval: 0.5)
-            OperationQueue.main.addOperation({ [weak self] _ in
+            OperationQueue.main.addOperation({ [weak self] in
                 self?.moveCardNumberOutAnimated()
             })
         })
