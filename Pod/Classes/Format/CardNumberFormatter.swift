@@ -199,7 +199,7 @@ public final class CardNumberFormatter {
         
         matches.forEach {
             for i in 1..<$0.numberOfRanges {
-                let range = $0.range(at: i)
+                let range = $0.rangeAt(i)
                 
                 if range.length > 0 {
                     result.append(NSString(string: string).substring(with: range))
