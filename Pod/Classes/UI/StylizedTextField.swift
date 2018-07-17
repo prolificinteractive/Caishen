@@ -77,7 +77,7 @@ open class StylizedTextField: UITextField, UITextFieldDelegate {
         self.delegate = self
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.delegate = self
