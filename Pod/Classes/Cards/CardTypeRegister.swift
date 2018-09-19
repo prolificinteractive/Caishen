@@ -14,7 +14,7 @@ open class CardTypeRegister {
     /**
      The default card type register, shared among all CardTextFields.
      */
-    open static let sharedCardTypeRegister = CardTypeRegister(registeredCardTypes: CardTypeRegister.defaultCardTypes)
+    public static let sharedCardTypeRegister = CardTypeRegister(registeredCardTypes: CardTypeRegister.defaultCardTypes)
     
     /// An array of all registered card types. You can edit this array with `registerCardType`, `unregisterCardType` or `setRegisteredCardTypes`.
     open private(set) var registeredCardTypes: [CardType]
@@ -37,7 +37,7 @@ open class CardTypeRegister {
     }
 
     /// An array with the default card types provided by Caishen.
-    open static let defaultCardTypes: [CardType] = [
+    public static let defaultCardTypes: [CardType] = [
             AmericanExpress(),
             ChinaUnionPay(),
             DinersClub(),

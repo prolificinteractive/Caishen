@@ -101,7 +101,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
     private func addDateInvalidityObserver() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(notifyExpiryInvalidity),
-                                               name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
+                                               name: UIAccessibility.announcementDidFinishNotification,
                                                object: nil)
     }
 
@@ -110,7 +110,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
      */
     @objc private func notifyExpiryInvalidity() {
         let localizedString = Localization.InvalidExpirationDate.localizedStringWithComment("The expiration date entered is not valid")
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, localizedString)
+        UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: localizedString)
         NotificationCenter.default.removeObserver(self)
     }
 }

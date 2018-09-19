@@ -215,7 +215,7 @@ open class NumberInputTextField: StylizedTextField {
     private func addNumberInvalidityObserver() {
         NotificationCenter.default.addObserver(self,
                                                          selector: #selector(notifyNumberInvalidity),
-                                                         name: NSNotification.Name.UIAccessibilityAnnouncementDidFinish,
+                                                         name: UIAccessibility.announcementDidFinishNotification,
                                                          object: nil)
     }
     
@@ -224,7 +224,7 @@ open class NumberInputTextField: StylizedTextField {
      */
     @objc private func notifyNumberInvalidity() {
         let localizedString = Localization.InvalidCardNumber.localizedStringWithComment("The expiration date entered is not valid")
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, localizedString)
+        UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: localizedString)
         NotificationCenter.default.removeObserver(self)
     }
 }
