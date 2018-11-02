@@ -278,7 +278,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
             fatalError("The nib is expected to contain a UIView as root element.")
         }
         
-        numberInputTextField.contentMode = UIViewContentMode.redraw
+        numberInputTextField.contentMode = UIView.ContentMode.redraw
         
         clipsToBounds = true
         
@@ -400,7 +400,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
      */
     private func setupTargetsForEditingBegin() {
         // Show the full number text field, if editing began on it
-        numberInputTextField?.addTarget(self, action: #selector(moveCardNumberInAnimated), for: UIControlEvents.editingDidBegin)
+        numberInputTextField?.addTarget(self, action: #selector(moveCardNumberInAnimated), for: UIControl.Event.editingDidBegin)
         
         // Show CVC image if the cvcTextField is selected, show card image otherwise
         let nonCVCTextFields: [UITextField?] = [numberInputTextField, monthTextField, yearTextField]
@@ -430,7 +430,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
         if let buttonImage = cardTextFieldDelegate?.cardTextFieldShouldShowAccessoryImage(self) {
             let scaledImage = buttonImage.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
             accessoryButton?.titleLabel?.text = nil
-            accessoryButton?.setImage(scaledImage, for: UIControlState())
+            accessoryButton?.setImage(scaledImage, for: UIControl.State())
             accessoryButton?.tintColor = numberInputTextField?.textColor
         }
         
@@ -602,7 +602,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
         // Return false if any of this text field's subviews is already first responder. 
         // Otherwise let `numberInputTextField` become the first responder.
         if [numberInputTextField,monthTextField,yearTextField,cvcTextField]
-            .flatMap({return $0.isFirstResponder})
+            .compactMap({return $0.isFirstResponder})
             .reduce(true, {$0 && $1}) {
             return false
         }

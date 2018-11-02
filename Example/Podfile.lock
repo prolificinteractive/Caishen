@@ -1,19 +1,23 @@
 PODS:
-  - Caishen (2.0.1)
+  - Caishen (2.1.2)
   - CardIO (5.3.2)
 
 DEPENDENCIES:
   - Caishen (from `../`)
   - CardIO
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CardIO
+
 EXTERNAL SOURCES:
   Caishen:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Caishen: eab0103b6f585d806c15b355799202f341ae4083
+  Caishen: 3bf9d9da5102fe2504ec483534a04a74a25f891f
   CardIO: 92c45caef0d986c4a303a7afba0c9b76ff2b1f6e
 
 PODFILE CHECKSUM: 1514fd4fa58ab9e1f9e1ed14ec4c0220e09f13d1
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3

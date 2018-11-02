@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.name             = "Caishen"
   s.version          = "2.1.2"
   s.summary          = "A Payment Card UI & Validator for iOS"
+  s.swift_version    = '4.2'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,9 +26,9 @@ Pod::Spec.new do |s|
   s.author           = { "Daniel Vancura" => "daniel@prolificinteractive.com" }
   s.source           = { :git => "https://github.com/prolificinteractive/caishen.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '8.0'
-  s.requires_arc = true
+  s.platform         = :ios, '8.0'
+  s.requires_arc     = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resources = ['Pod/Assets/*', 'Pod/Resources/*']
+  s.source_files     = 'Pod/Classes/**/*'
+  s.resources        = ['Pod/Assets/*', 'Pod/Resources/*']
 end
