@@ -191,7 +191,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
         }
     }
 
-    open override var isFirstResponder: Bool {
+    open var isChildFirstResponder: Bool {
         // Return true if any of `self`'s subviews is the current first responder.
         return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
             .filter({$0.isFirstResponder})
@@ -417,7 +417,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
 
     /// Function for the swipe gesture recognizer for moving out the card number.
     @objc private func swipeHideCardNumber() {
-        moveCardNumberOutAnimated(remainFirstResponder: isFirstResponder)
+        moveCardNumberOutAnimated(remainFirstResponder: isChildFirstResponder)
     }
 
     /**
@@ -506,12 +506,12 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
     
     open func numberInputTextFieldDidComplete(_ numberInputTextField: NumberInputTextField) {
         // Retain the first responder status if currently first responder.
-        moveCardNumberOutAnimated(remainFirstResponder: isFirstResponder)
+        moveCardNumberOutAnimated(remainFirstResponder: isChildFirstResponder)
         
         notifyDelegate()
         hideExpiryTextFields = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresExpiry
         hideCVCTextField = !cardTypeRegister.cardType(for: numberInputTextField.cardNumber).requiresCVC
-        if hideExpiryTextFields && hideCVCTextField || !isFirstResponder {
+        if hideExpiryTextFields && hideCVCTextField || !isChildFirstResponder {
             return
         } else if hideExpiryTextFields {
             cvcTextField.becomeFirstResponder()
@@ -602,24 +602,5 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
         default:
             return nil
         }
-    }
-    
-    open override func becomeFirstResponder() -> Bool {
-        // Return false if any of this text field's subviews is already first responder. 
-        // Otherwise let `numberInputTextField` become the first responder.
-        if [numberInputTextField,monthTextField,yearTextField,cvcTextField]
-            .map({return $0.isFirstResponder})
-            .reduce(true, {$0 && $1}) {
-            return false
-        }
-        return numberInputTextField.becomeFirstResponder()
-    }
-    
-    open override func resignFirstResponder() -> Bool {
-        // If any of `self`'s subviews is first responder, resign first responder status.
-        return [numberInputTextField,monthTextField,yearTextField,cvcTextField]
-            .filter({$0.isFirstResponder})
-            .first?
-            .resignFirstResponder() ?? true
     }
 }

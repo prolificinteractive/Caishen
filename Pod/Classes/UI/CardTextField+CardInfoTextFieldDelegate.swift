@@ -44,7 +44,7 @@ extension CardTextField: CardInfoTextFieldDelegate {
 
         // Let the next text field become first responder if one of the contained text fields
         // already is first responder.
-        if isFirstResponder {
+        if isChildFirstResponder {
             nextTextField?.becomeFirstResponder()
         }
 
