@@ -137,7 +137,7 @@ class ViewController: UIViewController, CardTextFieldDelegate, CardIOPaymentView
     func cardTextFieldShouldProvideAccessoryAction(_ cardTextField: CardTextField) -> (() -> ())? {
         return { [weak self] _ in
             let cardIOViewController = CardIOPaymentViewController(paymentDelegate: self)
-            self?.presentViewController(cardIOViewController, animated: true, completion: nil)
+            self?.present(cardIOViewController, animated: true, completion: nil)
         }
     }
     
@@ -145,17 +145,17 @@ class ViewController: UIViewController, CardTextFieldDelegate, CardIOPaymentView
     
     // 4. When receiving payment card information from CardIO, prefill the text field with that information:
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
-        cardTextField.prefillCardInformation(
+        cardTextField.prefill(
         	cardInfo.cardNumber, 
         	month: Int(cardInfo.expiryMonth), 
         	year: Int(cardInfo.expiryYear), 
         	cvc: cardInfo.cvv)
         	
-        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+        paymentViewController?.dismiss(animated: true, completion: nil)
     }
     
     func userDidCancelPaymentViewController(paymentViewController: CardIOPaymentViewController!) {
-        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+        paymentViewController?.dismiss(animated: true, completion: nil)
     }
 }
 ```
