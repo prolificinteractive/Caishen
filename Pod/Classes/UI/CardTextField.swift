@@ -603,4 +603,20 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
             return nil
         }
     }
+    
+    open override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        super.resignFirstResponder()
+        return false
+    }
+    
+    open override func resignFirstResponder() -> Bool {
+        // If any of `self`'s subviews is first responder, resign first responder status.
+        [numberInputTextField,monthTextField,yearTextField,cvcTextField]
+            .filter({$0.isFirstResponder})
+            .first?
+            .resignFirstResponder()
+        
+        return super.resignFirstResponder()
+    }
 }
