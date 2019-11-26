@@ -434,7 +434,7 @@ open class CardTextField: UITextField, NumberInputTextFieldDelegate {
         
         if let buttonImage = cardTextFieldDelegate?.cardTextFieldShouldShowAccessoryImage(self) {
             let scaledImage = buttonImage.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
-            accessoryButton?.titleLabel?.text = nil
+            accessoryButton?.setTitle(nil, for: UIControl.State())
             accessoryButton?.setImage(scaledImage, for: UIControl.State())
             accessoryButton?.tintColor = numberInputTextField?.textColor
         }
